@@ -1,0 +1,18 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# MySQL データ（永続ボリューム）
+/docker/mysql/data/
+# ログ・一時ファイル・キャッシュなど
+*.log
+*.tmp
+*.cache
+*.bak
+*.swp
+*.swo
+
+# .env は、環境ごとに異なるので無視
+.env
+
