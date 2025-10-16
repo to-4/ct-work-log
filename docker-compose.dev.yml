@@ -1,0 +1,20 @@
+# docker-compose.dev.yml（開発専用差分）
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+#  php サービス → dev.yml の設定で上書き
+#  nginx, db → 共通の compose.yml の設定がそのまま有効
+
+services:
+
+  # 開発（Xdebug 有り）
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile.dev
+      args:
+        UID: ${UID:-501} # Mac なら 501、WSL/Ubuntu なら 1000
+        # GID は渡さない
+    volumes:
+      - ./src:/var/www/ # Laravel プロジェクトのマウント
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+

@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   nginx:
@@ -11,26 +11,37 @@ services:
     depends_on:
       - php
 
+  # 本番（デフォルト起動）
   php:
-    build: ./docker/php
+    #build: ./docker/php
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-501} # Mac なら 501、WSL/Ubuntu なら 1000
+        # GID は渡さない
     volumes:
-      - ./src:/var/www/
+      - ./src:/var/www/ # Laravel プロジェクトのマウント
 
   mysql:
-    image: mysql:8.0.26
+    # mac の M1,M2 の ARM64 では、8.0 ではエラーとなる為、8.4 に変更
+    #image: mysql:8.0.26
+    image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel_db
       MYSQL_USER: laravel_user
       MYSQL_PASSWORD: laravel_pass
-    command:
-      mysqld --default-authentication-plugin=mysql_native_password
+    # mysql 8.4 では、下記コマンドは使用不可
+    #command:
+    #    mysqld --default-authentication-plugin=mysql_native_password
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    #image: phpmyadmin/phpmyadmin # <- Mac M1/M2 でエラー
+    image: phpmyadmin:5.2 # マルチアーキテクチャ対応
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
