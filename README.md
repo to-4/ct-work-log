@@ -80,3 +80,72 @@
 
 MailHog URL: [http://localhost:8025](http://localhost:8025)
 
+## 🧪 テスト手法（PHPUnit）
+
+本アプリでは **PHPUnit** による自動テストを実施しています。  
+Docker 上で Laravel + MySQL のテスト環境を再現し、  
+`.env.testing` に基づいた専用データベースでテストを行います。
+
+---
+
+### 🔧 環境構成
+
+| コンポーネント | バージョン | 用途 |
+|----------------|-------------|------|
+| PHP | 8.3 | アプリケーション実行 |
+| Laravel | 12.x | フレームワーク |
+| MySQL | 8.4 | データベース |
+| Docker Compose | 2.27 | コンテナ管理 |
+| PHPUnit | 10.x | 自動テスト |
+
+---
+
+### ⚙️ テスト用データベースの作成
+
+```bash
+# MySQLコンテナに接続
+docker compose exec mysql bash
+
+# MySQLシェルで下記を実行
+mysql -u root -p
+# パスワードは「root」と入力
+
+# テスト用データベースを作成
+CREATE DATABASE test_database;
+```
+
+---
+
+### 🧩 マイグレーションとテスト実行
+
+```bash
+# PHPコンテナに接続
+docker compose exec php bash
+
+# テスト環境（.env.testing）に基づきマイグレーション
+php artisan migrate:fresh --env=testing
+
+# PHPUnitによる全テスト実行
+./vendor/bin/phpunit
+```
+
+---
+
+### 👥 テストユーザー情報
+
+| 区分 | メールアドレス | パスワード |
+|------|----------------|------------|
+| 管理者 | admin@coachtech.com | pass |
+| 一般ユーザー | reina.n@coachtech.com | password |
+
+> ※ 上記アカウントは初期シーディング時に自動作成されます。  
+> `database/seeders/UserSeeder.php` 内で定義内容を確認できます。
+
+---
+
+### 🧾 備考
+
+- テスト環境の設定は `.env.testing` に記載されています。  
+- `APP_ENV=testing` を指定して実行すると、本番DBに影響を与えません。  
+- Feature / Unit テストは `tests/Feature` および `tests/Unit` ディレクトリに配置。  
+- CI/CD での自動テストにも対応可能（例：GitHub Actions を利用）。
