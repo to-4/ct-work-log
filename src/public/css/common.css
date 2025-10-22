@@ -1,0 +1,229 @@
+/* public/css/common.css */
+
+/* ===============================
+   共通スタイル
+   =============================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #000;
+    background-color: #fff;
+}
+
+/* ===============================
+   ヘッダー
+   =============================== */
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.header__logo img {
+    height: 28px;
+}
+
+.header__nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.header__nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: opacity 0.2s ease;
+}
+
+.header__nav a:hover {
+    opacity: 0.7;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.logout-button:hover {
+    opacity: 0.7;
+}
+
+/* ===============================
+   メイン
+   =============================== */
+.main {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+/* ===============================
+   ボタン共通
+   =============================== */
+button,
+a.btn {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover,
+a.btn:hover {
+    background-color: #333;
+}
+
+/* エラーメッセージ */
+.error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* 共通フラッシュメッセージ */
+.flash {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 成功時 */
+.flash-success {
+    background-color: #e6f7e6;
+    /* 薄いグリーン */
+    border: 1px solid #9ad49a;
+    /* グリーン枠 */
+    color: #2d7a2d;
+    /* 濃いグリーン文字 */
+}
+
+/* エラー時 */
+.flash-error {
+    background-color: #fdeaea;
+    /* 薄い赤 */
+    border: 1px solid #f19999;
+    /* 赤枠 */
+    color: #c9302c;
+    /* 濃い赤文字 */
+}
+
+/* 警告時 */
+.flash-warning {
+    background-color: #fff8e6;
+    /* 薄いオレンジ */
+    border: 1px solid #ffd36b;
+    /* オレンジ枠 */
+    color: #a66d00;
+    /* 濃いオレンジ文字 */
+}
+
+.flash {
+    transition: opacity 0.5s ease;
+}
+
+.flash.hide {
+    opacity: 0;
+}
+
+
+/* =============================
+    レスポンシブ対応
+   ============================= */
+
+/* 1400px ～ 1540px のPC幅での調整 */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .header__search input {
+        width: 200px;
+        /* 検索ボックスを少し縮める */
+    }
+
+    .header__nav ul {
+        gap: 12px;
+        /* ナビゲーション間隔を調整 */
+    }
+
+    .header__logo a {
+        font-size: 18px;
+        /* ロゴ文字サイズを微調整 */
+    }
+}
+
+/* タブレット（768px～1399px） */
+@media screen and (max-width: 1399px) and (min-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        /* 折り返して縦並びに */
+        gap: 12px;
+    }
+
+    .header__search input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .header__nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* スマホ（～767px） */
+@media screen and (max-width: 767px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header__logo {
+        margin-bottom: 12px;
+    }
+
+    .header__search input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .header__nav ul {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .header__nav a.btn-exhibit {
+        text-align: center;
+        width: 100%;
+    }
+}

@@ -1,0 +1,68 @@
+/* register.css */
+
+/* タイトル */
+.register-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+/* フォーム全体 */
+.register-form {
+    width: 320px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* 各入力ブロック */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    height: 38px;
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+/* 登録ボタン */
+.register-button {
+    display: block;
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.register-button:hover {
+    background-color: #333;
+}
+
+/* ログインリンク */
+.login-link {
+    margin-top: 20px;
+}
+
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
