@@ -43,6 +43,10 @@ use Carbon\Carbon; // 日付操作ライブラリ
  * @property TIMESTAMP|null $break2_end_at
  *     休憩２終了時刻
  *
+ * @property BIGINT UNSIGNED|null $attendance_status_id
+ *     ステータスID
+ *     1:勤務外, 2:勤務中, 3:休憩中, 4:退勤済み
+ *
  * @property TEXT|null $note
  *     備考
  *
@@ -70,6 +74,7 @@ class Attendance extends Model
         'break1_end_at',
         'break2_start_at',
         'break2_end_at',
+        'attendance_status_id',
         'note',
         'working_minutes',
     ];
@@ -93,6 +98,12 @@ class Attendance extends Model
     // 子（多）→ 親（0|1）
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    // 子（多）→ 親（0|1）
+    public function attendanceStatus()
+    {
+        return $this->belongsTo(AttendanceStatus::class);
     }
 }

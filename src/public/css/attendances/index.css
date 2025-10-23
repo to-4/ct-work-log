@@ -1,0 +1,102 @@
+/* 勤怠入力画面用スタイル */
+/* =============================== */
+
+.attendance {
+    background-color: #f4f3f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+}
+
+.attendance__inner {
+    text-align: center;
+}
+
+.status-label {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.attendance__date {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.attendance__time {
+    font-size: 64px;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+
+.attendance__actions {
+    margin-top: 24px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 48px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+    background-color: #f2f2f2;
+}
+
+.attendance__message {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+}
+
+/* =============================
+    レスポンシブ
+   ============================= */
+@media screen and (max-width: 768px) {
+    .attendance__time {
+        font-size: 48px;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 240px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

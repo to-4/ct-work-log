@@ -92,7 +92,7 @@ class AuthController extends Controller
         // remember チェックボックスがあれば第二引数で制御
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('test')); // 成功 → 管理画面へ
+            return redirect()->intended(route('attendance.index')); // 成功 → 管理画面へ
         }
 
         // ここでは「認証失敗」を email フィールドのエラーとして返す（項目下に出せる）

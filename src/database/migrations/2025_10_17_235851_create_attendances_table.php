@@ -23,6 +23,9 @@ return new class extends Migration
             $table->timestamp('break1_end_at')->nullable()->comment('休憩１終了時刻');
             $table->timestamp('break2_start_at')->nullable()->comment('休憩２開始時刻');
             $table->timestamp('break2_end_at')->nullable()->comment('休憩２終了時刻');
+            $table->foreignId('attendance_status_id')->comment('ステータスID')
+                ->constrained(table: 'attendance_statuses', column: 'id')
+                ->restrictOnDelete();
             $table->text('note')->nullable()->comment('備考');
             $table->integer('working_minutes')->nullable()->comment('勤務時間');
             $table->timestamps();
