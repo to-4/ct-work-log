@@ -23,6 +23,7 @@ class AttendanceController extends Controller
 
         // ログインユーザの現在日データを取得
         // 見つからなければ、空インスタンスをセット
+        /** @var Attendance $attendance */
         $attendance = Attendance::where('user_id', $user_id)
             ->wheredate('work_date', $today)
             ->first();

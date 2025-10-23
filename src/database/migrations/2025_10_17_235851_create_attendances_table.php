@@ -19,10 +19,6 @@ return new class extends Migration
             $table->date('work_date')->comment('日付');
             $table->timestamp('clock_in_at')->nullable()->comment('出勤時刻');
             $table->timestamp('clock_out_at')->nullable()->comment('退勤時刻');
-            $table->timestamp('break1_start_at')->nullable()->comment('休憩１開始時刻');
-            $table->timestamp('break1_end_at')->nullable()->comment('休憩１終了時刻');
-            $table->timestamp('break2_start_at')->nullable()->comment('休憩２開始時刻');
-            $table->timestamp('break2_end_at')->nullable()->comment('休憩２終了時刻');
             $table->foreignId('attendance_status_id')->comment('ステータスID')
                 ->constrained(table: 'attendance_statuses', column: 'id')
                 ->restrictOnDelete();

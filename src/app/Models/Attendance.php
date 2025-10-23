@@ -70,10 +70,6 @@ class Attendance extends Model
         'work_date',
         'clock_in_at',
         'clock_out_at',
-        'break1_start_at',
-        'break1_end_at',
-        'break2_start_at',
-        'break2_end_at',
         'attendance_status_id',
         'note',
         'working_minutes',
@@ -83,17 +79,9 @@ class Attendance extends Model
         'work_date' => 'date',
         'clock_in_at' => 'timestamp',
         'clock_out_at' => 'timestamp',
-        'break1_start_at' => 'timestamp',
-        'break1_end_at' => 'timestamp',
-        'break2_start_at' => 'timestamp',
-        'break2_end_at' => 'timestamp',
     ];
 
-    // 親（1） → 子（多）
-    public function attendanceCorrectionRequests()
-    {
-        return $this->hasMany(AttendanceCorrectionRequest::class);
-    }
+    // リレーション定義メソッド
 
     // 子（多）→ 親（0|1）
     public function user()
@@ -105,5 +93,17 @@ class Attendance extends Model
     public function attendanceStatus()
     {
         return $this->belongsTo(AttendanceStatus::class);
+    }
+
+    // 親（1） → 子（多）
+    public function attendanceCorrectionRequests()
+    {
+        return $this->hasMany(AttendanceCorrectionRequest::class);
+    }
+
+    // 親（1） → 子（多）
+    public function attendanceBreaks()
+    {
+        return $this->hasMany(AttendanceCorrectionRequest::class);
     }
 }
