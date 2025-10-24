@@ -111,7 +111,14 @@ mysql -u root -p
 # パスワードは「root」と入力
 
 # テスト用データベースを作成
-CREATE DATABASE test_database;
+CREATE DATABASE laravel_testing;
+
+# ユーザーを作成（.env.testing で使用)
+CREATE USER 'larabel_user'@'%' IDENTIFIED BY 'larabel_pass';
+
+# 権限を付与
+GRANT ALL PRIVILEGES ON `laravel_testing`.* TO 'laravel_user'@'%';
+FLUSH PRIVILEGES;
 ```
 
 ---
@@ -121,6 +128,12 @@ CREATE DATABASE test_database;
 ```bash
 # PHPコンテナに接続
 docker compose exec php bash
+
+# .env.testing を作成
+cp .env.testing.example .env.testing
+
+# .env.testing のキーを生成
+php artisan key:generate --env=testing
 
 # テスト環境（.env.testing）に基づきマイグレーション
 php artisan migrate:fresh --env=testing
