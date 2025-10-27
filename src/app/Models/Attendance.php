@@ -25,23 +25,13 @@ use Carbon\Carbon; // 日付操作ライブラリ
  *     日付
  *     年月日
  *
- * @property TIMESTAMP|null $clock_in_at
+ * @property TIME|null $clock_in_at
  *     出勤時刻
+ *     HH:MM ※ 秒は切り捨て
  *
- * @property TIMESTAMP|null $clock_out_at
+ * @property TIME|null $clock_out_at
  *     退勤時刻
- *
- * @property TIMESTAMP|null $break1_start_at
- *     休憩１開始時刻
- *
- * @property TIMESTAMP|null $break1_end_at
- *     休憩１終了時刻
- *
- * @property TIMESTAMP|null $break2_start_at
- *     休憩２開始時刻
- *
- * @property TIMESTAMP|null $break2_end_at
- *     休憩２終了時刻
+ *     HH:MM ※ 秒は切り捨て
  *
  * @property BIGINT UNSIGNED|null $attendance_status_id
  *     ステータスID
@@ -77,8 +67,8 @@ class Attendance extends Model
 
     protected $casts = [
         'work_date' => 'date',
-        'clock_in_at' => 'timestamp',
-        'clock_out_at' => 'timestamp',
+        'clock_in_at' => 'string',
+        'clock_out_at' => 'string',
     ];
 
     // リレーション定義メソッド
@@ -104,6 +94,6 @@ class Attendance extends Model
     // 親（1） → 子（多）
     public function attendanceBreaks()
     {
-        return $this->hasMany(AttendanceCorrectionRequest::class);
+        return $this->hasMany(AttendanceBreak::class);
     }
 }

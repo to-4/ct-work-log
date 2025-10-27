@@ -50,9 +50,15 @@ Route::middleware('auth')->group(function() {
         Route::post('/logout', 'destroy')->name('logout');
     });
 
-    Route::controller(AttendanceController::class)->group(function () {
-        Route::get ('/attendance', 'index')->name('attendance.index');
-    });
+    Route::prefix('/attendance')
+        ->name('attendance.')
+        ->controller(AttendanceController::class)->group(function () {
+            Route::get ('/',            'index')      ->name('index');
+            Route::post('/start',       'start')      ->name('start');
+            Route::post('/end',         'end')        ->name('end');
+            Route::post('/break/start', 'break_start')->name('break.start');
+            Route::post('/break/end',   'break_end')  ->name('break.end');
+        });
 });
 
 /*

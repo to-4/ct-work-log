@@ -17,8 +17,8 @@ return new class extends Migration
                 ->constrained(table: 'users', column: 'id')
                 ->restrictOnDelete();
             $table->date('work_date')->comment('日付');
-            $table->timestamp('clock_in_at')->nullable()->comment('出勤時刻');
-            $table->timestamp('clock_out_at')->nullable()->comment('退勤時刻');
+            $table->string('clock_in_at')->nullable()->comment('出勤時刻');
+            $table->string('clock_out_at')->nullable()->comment('退勤時刻');
             $table->foreignId('attendance_status_id')->comment('ステータスID')
                 ->constrained(table: 'attendance_statuses', column: 'id')
                 ->restrictOnDelete();

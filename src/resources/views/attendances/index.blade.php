@@ -33,7 +33,7 @@ use App\Models\AttendanceStatus;
             @switch($attendance->attendance_status_id)
             @case(AttendanceStatus::OFF_DUTY)
             {{-- 出勤前 --}}
-            <form method="POST" action="{{ route('test') }} {{--{{ route('attendance.start') }}--}}">
+            <form method="POST" action="{{ route('attendance.start') }}">
                 @csrf
                 <button type="submit" class="btn btn-primary">出勤</button>
             </form>
@@ -41,21 +41,21 @@ use App\Models\AttendanceStatus;
 
             @case(AttendanceStatus::WORKING)
             {{-- 出勤中 --}}
-            <div class="button-group">
-                <form method="POST" action="#{{--{{ route('attendance.end') }}--}}">
+            <di v class="button-group">
+                <form method="POST" action="{{ route('attendance.end') }}">
                     @csrf
                     <button type="submit" class="btn btn-primary">退勤</button>
                 </form>
-                <form method="POST" action="#{{--{{ route('attendance.break.start') }}--}}">
+                <form method="POST" action="{{ route('attendance.break.start') }}">
                     @csrf
                     <button type="submit" class="btn btn-secondary">休憩入</button>
                 </form>
-            </div>
+            </di>
             @break
 
             @case(AttendanceStatus::ON_BREAK)
             {{-- 休憩中 --}}
-            <form method="POST" action="#{{--{{ route('attendance.break.end') }}--}}">
+            <form method="POST" action="{{ route('attendance.break.end') }}">
                 @csrf
                 <button type="submit" class="btn btn-secondary">休憩戻</button>
             </form>

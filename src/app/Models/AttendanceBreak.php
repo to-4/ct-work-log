@@ -20,13 +20,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property BIGINT UNSIGNED $attendance_id
  *     勤怠データID
  *
- * @property TIMESTAMP $break_start_at
+ * @property TIME $break_start_at
  *     休憩開始時刻
- *     HH:mm
+ *     HH:mm ※ 秒は切り捨て
  *
- * @property TIMESTAMP|null $break_end_at
+ * @property TIME|null $break_end_at
  *     休憩終了時刻
- *     HH:mm
+ *     HH:mm ※ 秒は切り捨て
  *
  * @property INT|null $break_minutes
  *     休憩時間
@@ -52,8 +52,8 @@ class AttendanceBreak extends Model
     ];
 
     protected $casts = [
-        'break_start_at' => 'timestamp',
-        'break_end_at' => 'timestamp',
+        'break_start_at' => 'string',
+        'break_end_at' => 'string',
     ];
 
     // リレーション定義メソッド

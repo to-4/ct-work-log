@@ -31,10 +31,22 @@ class AttendanceStatus extends Model
 
     protected $table = 'attendance_statuses';
 
-    const OFF_DUTY   = 1; // 勤務外
-    const WORKING    = 2; // 出勤中
-    const ON_BREAK   = 3; // 休憩中
-    const COMPLETED  = 4; // 退勤済
+    /**
+     * ステータス：勤務外
+     */
+    const OFF_DUTY   = 1;
+    /**
+     * ステータス：出勤中
+     */
+    const WORKING    = 2;
+    /**
+     * ステータス：休憩中
+     */
+    const ON_BREAK   = 3;
+    /**
+     * ステータス：退勤済
+     */
+    const COMPLETED  = 4;
 
     use HasFactory;
 
