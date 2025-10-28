@@ -54,11 +54,12 @@ Route::middleware('auth')->group(function() {
         ->name('attendance.')
         ->controller(AttendanceController::class)->group(function () {
             Route::get ('/',            'index')      ->name('index');
+            Route::get ('/list',        'list')       ->name('list');
             Route::post('/start',       'start')      ->name('start');
             Route::post('/end',         'end')        ->name('end');
             Route::post('/break/start', 'break_start')->name('break.start');
             Route::post('/break/end',   'break_end')  ->name('break.end');
-        });
+    });
 });
 
 /*

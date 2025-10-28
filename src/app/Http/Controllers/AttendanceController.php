@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\AttendanceStatus;
 use App\Models\AttendanceBreak;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,67 @@ class AttendanceController extends Controller
         // ビューに渡す
         return view('attendances.index', compact('attendance'));
     }
+
+    /**
+     * 勤怠一覧表示
+     *
+     * @return void
+     */
+    public function list(Request $request)
+    {
+
+        // クエリパラメータを取得
+        $targetMonthStr = $request->query('month', Carbon::now()->format('Y-m'));
+
+        // Carbon オブジェクト取得
+        $targetMonth = Carbon::createFromFormat('Y-m', $targetMonthStr);
+
+        // 前月・次月を取得
+        $prevMonth = $targetMonth->copy()->subMonth();
+        $nextMonth = $targetMonth->copy()->addMonth();
+
+        // 勤怠情報（Collection）を取得
+        //  - key: YYYY-MM-DD, value: Attendance
+        $userId = Auth::user()->id;
+        $attendanceMap = Attendance::where('user_id', $userId)
+            ->whereMonth('work_date', $targetMonth->month)
+            ->whereYear('work_date', $targetMonth->year)
+            ->orderby('work_date')
+            ->get()
+            ->keyBy(function (Attendance $attendance) {
+                return $attendance->work_date->toDateString();
+            });
+
+        // 当月の全日付分の勤怠情報を生成（未登録日は work_date のみを持つ新インスタンスを作成）
+        $period = CarbonPeriod::create(
+            $targetMonth->copy()->startOfMonth(),
+            $targetMonth->copy()->endOfMonth()
+        );
+
+        $attendances = collect();
+        foreach ($period as $date) {
+            $dateKey = $date->toDateString();
+            if ($attendanceMap->has($dateKey)) {
+                $attendances->push($attendanceMap->get($dateKey));
+                continue;
+            }
+
+            $placeholder = new Attendance([
+                'user_id'   => $userId,
+                'work_date' => $date->copy(),
+            ]);
+            $attendances->push($placeholder);
+        }
+
+        // ビューに渡す
+        return view('attendances.list', compact(
+            'attendances',
+            'targetMonth',
+            'prevMonth',
+            'nextMonth'
+        ));
+    }
+
 
     /**
      * 勤怠入力：出勤
@@ -105,17 +167,19 @@ class AttendanceController extends Controller
             $attendance->clock_out_at = $current_time; // 退勤時刻
             $attendance->attendance_status_id = AttendanceStatus::COMPLETED; // 退勤済みステータス
 
+            // 休憩時間の集計（分）
+            $break_minutes = 0;
+            $breaks = $attendance->attendanceBreaks;
+            foreach ($breaks as $break) {
+                $break_minutes += $break->break_minutes;
+            }
+            $attendance->break_minutes = $break_minutes;
+
             // 勤務時間集計（分）
             $clock_in_at  = Carbon::createFromFormat('H:i', $attendance->clock_in_at);
             $clock_out_at = Carbon::createFromFormat('H:i', $attendance->clock_out_at);
             $working_minutes = $clock_in_at->diffinminutes($clock_out_at);
-
-            $breaks = $attendance->attendanceBreaks();
-            foreach ($breaks as $break)
-            {
-                $working_minutes -= $break->break_minutes; // 休憩時間を減算
-            }
-            $attendance->working_minutes = $working_minutes;
+            $attendance->working_minutes = $working_minutes - $break_minutes;
 
             // テーブル更新
             $attendance->save();

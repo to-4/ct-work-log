@@ -24,6 +24,8 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->text('note')->nullable()->comment('備考');
             $table->integer('working_minutes')->nullable()->comment('勤務時間');
+            $table->integer('break_minutes')->nullable()->comment('休憩時間');
+            $table->boolean('is_pending_approval')->default(false)->comment('承認待ちフラグ');
             $table->timestamps();
         });
     }

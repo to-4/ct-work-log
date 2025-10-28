@@ -44,6 +44,14 @@ use Carbon\Carbon; // 日付操作ライブラリ
  *     勤務時間
  *     勤務時間を分単位で保存（例. 480=8時間）
  *
+ * @property INT|null $break_minutes
+ *     休憩時間
+ *     休憩時間を分単位で保存（例. 480=8時間）
+ *
+ * @property BOOL $is_ppending_approval
+ *     承認待ちフラグ
+ *     true: 承認待ち、false: 承認待ちではない（デフォルト）
+ *
  * @property Carbon|null $created_at
  *     タスクが作成された日時（Laravelが自動で管理）
  *
@@ -63,12 +71,15 @@ class Attendance extends Model
         'attendance_status_id',
         'note',
         'working_minutes',
+        'break_minutes',
+        'is_ppending_approval',
     ];
 
     protected $casts = [
         'work_date' => 'date',
         'clock_in_at' => 'string',
         'clock_out_at' => 'string',
+        'is_ppending_approval' => 'false',
     ];
 
     // リレーション定義メソッド
