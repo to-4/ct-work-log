@@ -51,8 +51,8 @@ class AttendanceCorrectionRequest extends Model
     ];
 
     protected $casts = [
-        'requested_at' => 'timestamp',
-        'approved_at' => 'timestamp',
+        'requested_at' => 'datetime',
+        'approved_at' => 'datetime',
     ];
 
     // 子（多）→ 親（0|1）

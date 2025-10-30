@@ -6,15 +6,20 @@
     background-color: #f5f4f4;
     padding: 60px 20px 100px;
     min-height: 100vh;
+    color: #737373;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .attendance-list__title {
     text-align: left;
-    font-size: 22px;
+    color: #000;
+    font-size: 30px;
     font-weight: 700;
     border-left: 6px solid #000;
-    padding-left: 12px;
-    margin-bottom: 32px;
+    padding-left: 20px;
+    margin-top: 0;
+    margin-bottom: 40px;
 }
 
 .attendance-list__month-nav {
@@ -125,7 +130,6 @@
 
 .attendance-table th {
     background-color: #fff;
-    font-weight: 700;
 }
 
 .attendance-table tr:last-child td {
@@ -134,8 +138,7 @@
 
 .link-detail {
     color: #000;
-    text-decoration: underline;
-    font-weight: 600;
+    text-decoration: none;
 }
 
 .link-detail:hover {

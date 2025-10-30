@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
+use App\Models\AttendanceCorrectionRequest;
 use App\Models\AttendanceStatus;
 use App\Http\Requests\UpdateAttendanceRequest;
 use Carbon\Carbon;
@@ -365,6 +366,12 @@ class AttendanceController extends Controller
 
                 $attendance->is_pending_approval = true; // 承認待ちフラグ
                 $attendance->save();
+
+                // 勤怠修正申請情報を登録
+                AttendanceCorrectionRequest::create([
+                    'attendance_id' => $attendance->id,
+                    'requested_at'  => Carbon::now(),
+                ]);
             });
         }
         catch (Throwable $e) {
@@ -379,6 +386,6 @@ class AttendanceController extends Controller
                 ->withInput();
         }
 
-        return redirect()->route('attendance.list');
+        return redirect()->route('request.list');
     }
 }

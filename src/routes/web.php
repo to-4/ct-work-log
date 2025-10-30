@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,12 @@ Route::middleware('auth')->group(function() {
             Route::post('/break/end',   'break_end')  ->name('break.end');
             Route::put ('/detail/{id}', 'update')     ->name('detail.update');
     });
+
+    Route::prefix('/stamp_correction_request')
+        ->name('request.')
+        ->controller(RequestController::class)->group(function () {
+            Route::get('/list', 'list')->name('list');
+        });
 });
 
 /*

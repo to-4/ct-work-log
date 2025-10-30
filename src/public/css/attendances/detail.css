@@ -10,11 +10,12 @@
 
 .attendance-detail__title {
     text-align: left;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 700;
     border-left: 6px solid #000;
-    padding-left: 12px;
-    margin-bottom: 32px;
+    padding-left: 20px;
+    margin-top: 0;
+    margin-bottom: 50px;
 }
 
 /* フォーム全体 */
