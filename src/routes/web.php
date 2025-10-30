@@ -55,10 +55,12 @@ Route::middleware('auth')->group(function() {
         ->controller(AttendanceController::class)->group(function () {
             Route::get ('/',            'index')      ->name('index');
             Route::get ('/list',        'list')       ->name('list');
+            Route::get ('/detail/{id}', 'detail')     ->name('detail');
             Route::post('/start',       'start')      ->name('start');
             Route::post('/end',         'end')        ->name('end');
             Route::post('/break/start', 'break_start')->name('break.start');
             Route::post('/break/end',   'break_end')  ->name('break.end');
+            Route::put ('/detail/{id}', 'update')     ->name('detail.update');
     });
 });
 

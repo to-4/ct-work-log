@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
-use App\Models\AttendanceStatus;
 use App\Models\AttendanceBreak;
+use App\Models\AttendanceStatus;
+use App\Http\Requests\UpdateAttendanceRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 use function Psy\debug;
 
@@ -106,6 +109,29 @@ class AttendanceController extends Controller
         ));
     }
 
+    /**
+     * 勤怠詳細画面を表示
+     */
+    public function detail($id)
+    {
+        // 対象勤怠データを取得（関連データもまとめて取得）
+        /** @var Attendance $attendance */
+        $attendance = Attendance::where('id', $id)->first();
+        if ($attendance == null) {
+            return back()->with('error', '勤怠情報がありません');
+        }
+
+        $attendance->loadMissing('user');
+        $attendance->loadmissing('attendanceBreaks');
+        $temp = $attendance->attendanceBreaks;
+
+        // ログインユーザーが他人の勤怠にアクセスしていないか確認
+        if (Auth::User()->id !== $attendance->user_id) {
+            abort(403, 'このページへアクセスする権限がありません。');
+        }
+
+        return view('attendances.detail', compact('attendance'));
+    }
 
     /**
      * 勤怠入力：出勤
@@ -168,11 +194,7 @@ class AttendanceController extends Controller
             $attendance->attendance_status_id = AttendanceStatus::COMPLETED; // 退勤済みステータス
 
             // 休憩時間の集計（分）
-            $break_minutes = 0;
-            $breaks = $attendance->attendanceBreaks;
-            foreach ($breaks as $break) {
-                $break_minutes += $break->break_minutes;
-            }
+            $break_minutes = AttendanceBreak::sumBreakMinutes($attendance->attendanceBreaks);
             $attendance->break_minutes = $break_minutes;
 
             // 勤務時間集計（分）
@@ -249,7 +271,7 @@ class AttendanceController extends Controller
         $today        = Carbon::today(); // 現在日
         $current_time = Carbon::now()->setSecond(0)->format('H:i'); // 現在時刻（秒切り捨て）
 
-        // ログインユーザの現在日データを取得 
+        // ログインユーザの現在日データを取得
         // 見つからなければ、エラーメッセージ
         /** @var Attendance $attendance */
         $attendance = Attendance::where('user_id', $user_id)
@@ -272,13 +294,9 @@ class AttendanceController extends Controller
             $break = $attendance->attendanceBreaks()
                 ->where('break_end_at', null)
                 ->first();
-            $break->break_end_at = $current_time; // 休憩終了時刻
 
-            // 休憩時間を集計
-            $break_start_at = Carbon::createFromFormat('H:i', $break->break_start_at);
-            $break_end_at   = Carbon::createFromFormat('H:i', $break->break_end_at);
-            $break_minutes  = $break_start_at->diffInMinutes($break_end_at);
-            $break->break_minutes = $break_minutes;
+            $break->break_end_at = $current_time; // 休憩終了時刻
+            $break->break_minutes = AttendanceBreak::getBreakMinutes($break); // 休憩時間
 
             $break->save();
         } catch (\Throwable $e) {
@@ -287,5 +305,80 @@ class AttendanceController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * 勤怠詳細：修正
+     *
+     * @return void
+     */
+    public function update(UpdateAttendanceRequest $request, $id)
+    {
+        // 検証はここへ来る前に完了（$request->validated() でOK）
+        $validated = $request->validated();
+
+        /** @var Attendance $attendance */
+        $attendance = Attendance::with('attendanceBreaks')->findOrFail($id);
+
+        try {
+
+            // トランザクションでまとめて処理
+            // ※ 失敗時は自動でロールバックがされる
+            DB::transaction(function () use ($request, $attendance) {
+
+                // 休憩情報の更新
+                foreach ($request->input('breaks', []) as $breakId => $data) {
+
+                    // 値が両方とも空ならスキップ
+                    if (empty($data['break_start_at']) && empty($data['break_end_at'])) {
+                        continue;
+                    }
+
+                    $break = new AttendanceBreak();
+                    if ($breakId != 'new') {
+                        $break = $attendance->attendanceBreaks()->find($breakId); // 既存情報を取得
+                    }
+
+                    // 休憩情報の新規登録/更新
+                    $break = $attendance->attendanceBreaks()->find($breakId);
+                    $break->break_start_at = $data['break_start_at'];
+                    $break->break_end_at   = $data['break_end_at'];
+                    $break->break_minutes  = AttendanceBreak::getBreakMinutes($break);
+                    $break->save();
+                }
+
+                // 勤怠情報を更新
+                $attendance->clock_in_at  = $request->input('clock_in_at');
+                $attendance->clock_out_at = $request->input('clock_out_at');
+                $attendance->note         = $request->input('note');
+
+                // 休憩時間を再集計
+                $attendance->load('attendanceBreaks');
+                $break_minutes = AttendanceBreak::sumBreakMinutes($attendance->attendanceBreaks);
+                $attendance->break_minutes = $break_minutes;
+
+                // 勤務時間を再集計
+                $clock_in_at  = Carbon::createFromFormat('H:i', $attendance->clock_in_at);
+                $clock_out_at = Carbon::createFromFormat('H:i', $attendance->clock_out_at);
+                $working_minutes = $clock_in_at->diffinminutes($clock_out_at);
+                $attendance->working_minutes = $working_minutes - $break_minutes;
+
+                $attendance->is_pending_approval = true; // 承認待ちフラグ
+                $attendance->save();
+            });
+        }
+        catch (Throwable $e) {
+            Log::error('勤怠更新に失敗しました: ' . $e->getMessage(), [
+                'user_id' => Auth::User()->id,
+                'attendance_id' => $id,
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return back()
+                ->withErrors(['error' => '更新処理中にエラーが発生しました。時間をおいて再度お試しください。'])
+                ->withInput();
+        }
+
+        return redirect()->route('attendance.list');
     }
 }

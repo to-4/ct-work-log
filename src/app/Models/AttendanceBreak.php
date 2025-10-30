@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 
 /**
  * AttendanceBreak model
@@ -62,5 +64,50 @@ class AttendanceBreak extends Model
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
+    }
+
+    // ヘルパーメソッド
+
+    /**
+     * AttendanceBreak コレクションから break_minutes を集計
+     *
+     * @param Collection(self) $breaks
+     * @return integer
+     */
+    public static function sumBreakMinutes(Collection $breaks): int
+    {
+        // sum メソッドでは、引数が関数（クロージャ）の場合は要素を引数とする
+        // self: 当クラス（AttendanceBreak）
+        return $breaks->sum(
+            fn (self $break): int => $break->break_minutes ?? 0
+        );
+    }
+
+    /**
+     * AttendanceBreak を基に、break_minutes を取得
+     * ※1. 開始時刻または終了時刻が存在しない場合は、0 を返す
+     * ※2. 例外発生時は、0 を返す
+     *
+     * @param self $break
+     * @return integer
+     */
+    public static function getBreakMinutes(self $break): int
+    {
+        $start = $break->break_start_at;
+        $end   = $break->break_end_at;
+
+        // null または 空文字をチェック
+        if (empty($start) || empty($end)) {
+            return 0;
+        }
+
+        try {
+            $break_start_at = Carbon::createFromFormat('H:i', $start);
+            $break_end_at   = Carbon::createFromFormat('H:i', $end);
+            return $break_start_at->diffInMinutes($break_end_at);
+        }
+        catch (\Exception) {
+            return 0;
+        }
     }
 }

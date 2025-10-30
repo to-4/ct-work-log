@@ -49,7 +49,7 @@
                 <td>{{ $attendance->clock_out_at ? $attendance->clock_out_at : '' }}</td>
                 <td>{{ $attendance->break_minutes ? floor($attendance->break_minutes / 60) . ':' . str_pad($attendance->break_minutes % 60, 2, '0', STR_PAD_LEFT) : '' }}</td>
                 <td>{{ $attendance->working_minutes ? floor($attendance->working_minutes / 60) . ':' . str_pad($attendance->working_minutes % 60, 2, '0', STR_PAD_LEFT) : '' }}</td>
-                <td><a href="#" class="link-detail">詳細</a></td>
+                <td><a href="{{ route('attendance.detail', ['id' => $attendance->id ? $attendance->id : '0']) }}" class="link-detail">詳細</a></td>
             </tr>
             @endforeach
         </tbody>
