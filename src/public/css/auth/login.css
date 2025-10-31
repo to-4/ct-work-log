@@ -1,5 +1,10 @@
 /* login.css */
 
+/* レイアウトの上書き */
+.main {
+    background-color: #fff;
+}
+
 /* タイトル */
 .login-title {
     font-size: 22px;

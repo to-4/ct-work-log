@@ -15,16 +15,16 @@
     <div class="month-switch-wrapper">
         <div class="month-switch">
             <a href="{{ route('attendance.list', ['month' => $prevMonth->format('Y-m')]) }}" class="month-switch__btn month-switch__btn--left">
-                <i class="fa-solid fa-angle-left"></i> 前月
+                <img src="{{ asset('images/arrow_icon.png') }}" class="icon icon--arrow-left"> 前月
             </a>
 
             <div class="month-switch__current">
-                <i class="fa-solid fa-calendar-days"></i>
+                <img src="{{ asset('images/calender_icon.png') }}" class="icon icon--calendar">
                 <span>{{ $targetMonth->format('Y/m') }}</span>
             </div>
 
             <a href="{{ route('attendance.list', ['month' => $nextMonth->format('Y-m')]) }}" class="month-switch__btn month-switch__btn--right">
-                翌月 <i class="fa-solid fa-angle-right"></i>
+                翌月 <img src="{{ asset('images/arrow_icon.png') }}" class="icon icon--arrow-right">
             </a>
         </div>
     </div>
