@@ -38,7 +38,7 @@ class AdminAuthController extends Controller
 
             // 管理者権限チェック
             if (Auth::user()->is_admin) {
-                return redirect()->intended(route('admin.test')); // 管理者 → 管理画面へ
+                return redirect()->intended(route('admin.attendance.list')); // 管理者 → 管理画面へ
             } else {
                 Auth::logout(); // 一般ユーザーならログアウトさせる
                 throw ValidationException::withMessages([

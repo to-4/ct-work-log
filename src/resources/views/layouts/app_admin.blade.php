@@ -25,8 +25,8 @@
             <nav class="header__nav">
                 <ul>
                     @if (Auth::check() && Auth::user()->is_admin)
-                    <li><a href="{{ url('/attendance') }}">勤怠一覧</a></li>
-                    <li><a href="{{ url('/attendance/list') }}">スタッフ一覧</a></li>
+                    <li><a href="{{ url('/admin/attendance/list') }}">勤怠一覧</a></li>
+                    <li><a href="{{ url('/admin/staff/list') }}">スタッフ一覧</a></li>
                     <li><a href="{{ url('/stamp_correction_request/list') }}">申請一覧</a></li>
                     <li>
                         <form method="POST" action="{{ route('admin.logout') }}">

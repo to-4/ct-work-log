@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RequestController;
@@ -108,8 +110,28 @@ Route::prefix('admin')
             Route::controller(AdminAuthController::class)->group(function () {
                 Route::post('/logout', 'destroy')->name('logout');
             });
+
+            Route::prefix('/attendance')
+                ->name('attendance.')
+                ->controller(AdminAttendanceController::class)->group(function () {
+                    Route::get ('/list',   'list')  ->name('list');
+                    Route::get ('/detail', 'detail')->name('detail');
+                });
+
         });
-   });
+    });
+
+/*
+|--------------------------------------------------------------------------
+| 申請一覧（管理者ログイン済み（admin））用ルート
+|--------------------------------------------------------------------------
+*/
+Route::middleware('admin')
+    ->prefix('stamp_correction_request')
+    ->name('admin.request.')
+    ->controller(AdminRequestController::class)->group(function () {
+        Route::get('/approve/{attendance_correct_request_id}', 'approve')->name('approve');
+    });
 
 Route::get("/", function() {
     return view("test");
