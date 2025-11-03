@@ -114,10 +114,10 @@ Route::prefix('admin')
             Route::prefix('/attendance')
                 ->name('attendance.')
                 ->controller(AdminAttendanceController::class)->group(function () {
-                    Route::get ('/list',   'list')  ->name('list');
-                    Route::get ('/detail', 'detail')->name('detail');
-                });
-
+                    Route::get ('/list',        'list')  ->name('list');
+                    Route::get ('/detail/{id}', 'detail')->name('detail');
+                    Route::put ('/detail/{id}', 'update')->name('detail.update');
+            });
         });
     });
 

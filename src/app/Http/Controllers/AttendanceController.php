@@ -321,6 +321,12 @@ class AttendanceController extends Controller
         /** @var Attendance $attendance */
         $attendance = Attendance::with('attendanceBreaks')->findOrFail($id);
 
+        if ($attendance->attendance_status_id !== AttendanceStatus::COMPLETED) {
+            return back()
+                ->with('error', '退勤済みの勤怠のみ修正できます。')
+                ->withInput();
+        }
+
         try {
 
             // トランザクションでまとめて処理

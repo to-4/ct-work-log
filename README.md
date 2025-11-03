@@ -162,3 +162,4 @@ php artisan migrate:fresh --env=testing
 - `APP_ENV=testing` を指定して実行すると、本番DBに影響を与えません。  
 - Feature / Unit テストは `tests/Feature` および `tests/Unit` ディレクトリに配置。  
 - CI/CD での自動テストにも対応可能（例：GitHub Actions を利用）。
+- 勤怠修正機能はデータ整合性保持のため退勤済みのみ修正可能とする。
