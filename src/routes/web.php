@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminRequestController;
+use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RequestController;
@@ -118,6 +119,12 @@ Route::prefix('admin')
                     Route::get ('/detail/{id}', 'detail')->name('detail');
                     Route::put ('/detail/{id}', 'update')->name('detail.update');
             });
+
+            Route::prefix('/staff')
+                ->name('staff.')
+                ->controller(AdminStaffController::class)->group(function () {
+                    Route::get('/list', 'list')->name('list');
+                });
         });
     });
 

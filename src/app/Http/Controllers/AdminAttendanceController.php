@@ -52,11 +52,6 @@ class AdminAttendanceController extends Controller
             return back()->with('error', '勤怠情報がありません');
         }
 
-        // 退勤済みの勤怠のみ修正可とする
-        if ($attendance->attendance_status_id !== AttendanceStatus::COMPLETED) {
-            return back()->with('error', 'まだ退勤済みではありません');
-        }
-
         $attendance->loadMissing('user');
         $attendance->loadmissing('attendanceBreaks');
         $temp = $attendance->attendanceBreaks;
@@ -80,7 +75,7 @@ class AdminAttendanceController extends Controller
         if ($attendance->attendance_status_id !== AttendanceStatus::COMPLETED) {
             return back()
                 ->with('error', '退勤済みの勤怠のみ修正できます。')
-                ->withInput();
+                ->withInput(); // 入力を保持
         }
 
         try {
