@@ -6,7 +6,9 @@ use App\Http\Requests\UpdateAttendanceRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use App\Models\AttendanceStatus;
+use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -143,5 +145,69 @@ class AdminAttendanceController extends Controller
         }
 
         return redirect()->route('request.list');
+    }
+
+    /**
+     * スタッフ別の勤怠一覧表示
+     *
+     * @return void
+     */
+    public function staff_list(Request $request, $id)
+    {
+
+        // ユーザ情報取得
+        $user = User::where('id', $id)->first();
+        $userId = $id;
+
+        // クエリパラメータを取得
+        $targetMonthStr = $request->query('month', Carbon::now()->format('Y-m'));
+
+        // Carbon オブジェクト取得
+        $targetMonth = Carbon::createFromFormat('Y-m', $targetMonthStr);
+
+        // 前月・次月を取得
+        $prevMonth = $targetMonth->copy()->subMonth();
+        $nextMonth = $targetMonth->copy()->addMonth();
+
+        // 勤怠情報（Collection）を取得
+        //  - key: YYYY-MM-DD, value: Attendance
+        $attendanceMap = Attendance::where('user_id', $userId)
+            ->whereMonth('work_date', $targetMonth->month)
+            ->whereYear('work_date', $targetMonth->year)
+            ->orderby('work_date')
+            ->get()
+            ->keyBy(function (Attendance $attendance) {
+                return $attendance->work_date->toDateString();
+            });
+
+        // 当月の全日付分の勤怠情報を生成（未登録日は work_date のみを持つ新インスタンスを作成）
+        $period = CarbonPeriod::create(
+            $targetMonth->copy()->startOfMonth(),
+            $targetMonth->copy()->endOfMonth()
+        );
+
+        $attendances = collect();
+        foreach ($period as $date) {
+            $dateKey = $date->toDateString();
+            if ($attendanceMap->has($dateKey)) {
+                $attendances->push($attendanceMap->get($dateKey));
+                continue;
+            }
+
+            $placeholder = new Attendance([
+                'user_id'   => $userId,
+                'work_date' => $date->copy(),
+            ]);
+            $attendances->push($placeholder);
+        }
+
+        // ビューに渡す
+        return view('admin.attendances.staff_list', compact(
+            'attendances',
+            'targetMonth',
+            'prevMonth',
+            'nextMonth',
+            'user'
+        ));
     }
 }
