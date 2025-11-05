@@ -39,7 +39,7 @@
                 <td>{{ $request->attendance->note ?? '-' }}</td>
                 <td>{{ optional($request->requested_at)->format('Y/m/d') }}</td>
                 <td>
-                    <a href="#{{--{{ route('attendance.detail', $request->attendance->id) }}--}}" class="detail-link">詳細</a>
+                    <a href="{{ route('admin.request.approve', $request->id) }}" class="detail-link">詳細</a>
                 </td>
             </tr>
             @empty

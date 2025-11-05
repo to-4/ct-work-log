@@ -1,0 +1,25 @@
+@import url('../../common_detail.css');
+
+/* ===============================
+   承認済みボタン（非クリック表示）
+   =============================== */
+.btn-approved {
+    display: inline-block;
+    background-color: #737373; /* グレー */
+    color: #fff;
+    padding: 12px 40px;
+    margin:0;
+    border-radius: 4px;
+    font-size: 22px;
+    text-align: center;
+    cursor: default;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    user-select: none; /* 選択不可 */
+}
+
+/* 修正ボタンと同じ位置に表示 */
+.attendance-detail__actions {
+    text-align: right;
+    margin-top: 24px;
+}

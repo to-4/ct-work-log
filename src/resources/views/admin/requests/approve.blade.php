@@ -3,14 +3,14 @@
 @section('title', '勤怠詳細')
 
 @push('page-css')
-<link rel="stylesheet" href="{{ asset('css/admin/attendances/detail.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/requests/approve.css') }}">
 @endpush
 
 @section('content')
 <main class="attendance-detail">
     <h1 class="attendance-detail__title">勤怠詳細</h1>
 
-    <form method="POST" action="{{ route('admin.attendance.detail.update', $attendance->id) }}">
+    <form method="POST" action="{{ route('admin.request.approve.update', $correctionRequest->id) }}">
         @csrf
         @method('PUT')
 
@@ -25,7 +25,7 @@
             {{-- 日付 --}}
             <div class="attendance-detail__row">
                 <div class="attendance-detail__label">日付</div>
-                <div class="attendance-detail__value">
+                <div class="attendance-detail__value letter_spacing">
                     {{ $attendance->work_date->format('Y年n月j日') }}
                 </div>
             </div>
@@ -36,28 +36,14 @@
                 <div class="attendance-detail__value">
                     <div class="input-pair">
                         <div class="attendance-detail__value_start">
-                            <input type="text"
-                                name="clock_in_at"
-                                value="{{ old('clock_in_at', substr($attendance->clock_in_at ?? '', 0, 5)) }}">
+                            {{ old('clock_in_at', substr($attendance->clock_in_at ?? '', 0, 5)) }}
                         </div>
                         <div class="attendance-detail__value_delim">
                             <span>〜</span>
                         </div>
                         <div class="attendance-detail__value_end">
-                            <input type="text"
-                                name="clock_out_at"
-                                value="{{ old('clock_out_at', substr($attendance->clock_out_at ?? '', 0, 5)) }}">
+                            {{ old('clock_out_at', substr($attendance->clock_out_at ?? '', 0, 5)) }}
                         </div>
-                    </div>
-
-                    {{-- エラーメッセージを下にまとめて表示 --}}
-                    <div class="error-area">
-                        @error('clock_in_at')
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
-                        @error('clock_out_at')
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
             </div>
@@ -67,35 +53,21 @@
             @php
             $breakId = $break->id;
             @endphp
-            <div class="attendance-detail__row">
+            <div class=" attendance-detail__row">
                 <div class="attendance-detail__label">
                     休憩{{ $index > 0 ? $index + 1 : '' }}
                 </div>
                 <div class="attendance-detail__value">
                     <div class="input-pair">
                         <div class="attendance-detail__value_start">
-                            <input type="text"
-                                name="breaks[{{ $breakId }}][break_start_at]"
-                                value="{{ old("breaks.$breakId.break_start_at", substr($break->break_start_at ?? '', 0, 5)) }}">
+                            {{ old("breaks.$breakId.break_start_at", substr($break->break_start_at ?? '', 0, 5)) }}
                         </div>
                         <div class="attendance-detail__value_delim">
                             <span>〜</span>
                         </div>
                         <div class="attendance-detail__value_end">
-                            <input type="text"
-                                name="breaks[{{ $breakId }}][break_end_at]"
-                                value="{{ old("breaks.$breakId.break_end_at", substr($break->break_end_at ?? '', 0, 5)) }}">
+                            {{ old("breaks.$breakId.break_end_at", substr($break->break_end_at ?? '', 0, 5)) }}
                         </div>
-                    </div>
-
-                    {{-- エラーメッセージを下にまとめて表示 --}}
-                    <div class="error-area">
-                        @error("breaks.$breakId.break_start_at")
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
-                        @error("breaks.$breakId.break_end_at")
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
             </div>
@@ -108,50 +80,35 @@
                 <div class="attendance-detail__value">
                     <div class="input-pair">
                         <div class="attendance-detail__value_start">
-                            <input type="text"
-                                name="breaks[new][break_start_at]"
-                                value="{{ old('breaks.new.break_start_at') }}">
+                            {{ old('breaks.new.break_start_at') }}
                         </div>
                         <div class="attendance-detail__value_delim">
                             <span>〜</span>
                         </div>
                         <div class="attendance-detail__value_end">
-                            <input type="text"
-                                name="breaks[new][break_end_at]"
-                                value="{{ old('breaks.new.break_end_at') }}">
+                            {{ old('breaks.new.break_end_at') }}
                         </div>
-                    </div>
-
-                    {{-- エラーメッセージを下にまとめて表示 --}}
-                    <div class="error-area">
-                        @error('breaks.new.break_start_at')
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
-                        @error('breaks.new.break_end_at')
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
             </div>
+
             {{-- 備考 --}}
             <div class="attendance-detail__row">
                 <div class="attendance-detail__label">備考</div>
                 <div class="attendance-detail__value">
-                    <div class="input-pair">
-                        <textarea name="note">{{ old('note', $attendance->note) }}</textarea>
-                    </div>
-
-                    {{-- エラーメッセージを下にまとめて表示 --}}
-                    <div class="error-area">
-                        @error('note')
-                        <p class="error-message">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    {{ old('note', $attendance->note) }}
                 </div>
             </div>
         </div>
         <div class="attendance-detail__actions">
+
+            @if (empty($correctionRequest->approved_at))
+            {{-- 修正ボタン --}}
             <button type="submit" class="btn btn-primary">修正</button>
+            @else
+            {{-- 承認済みボタン（非クリック・装飾済み） --}}
+            <p class="btn-approved">承認済み</p>
+            @endif
         </div>
     </form>
 </main>

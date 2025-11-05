@@ -56,7 +56,6 @@ class AdminAttendanceController extends Controller
 
         $attendance->loadMissing('user');
         $attendance->loadmissing('attendanceBreaks');
-        $temp = $attendance->attendanceBreaks;
 
         return view('admin.attendances.detail', compact('attendance'));
     }
@@ -76,7 +75,7 @@ class AdminAttendanceController extends Controller
 
         if ($attendance->attendance_status_id !== AttendanceStatus::COMPLETED) {
             return back()
-                ->with('error', '退勤済みの勤怠のみ修正できます。')
+                ->with('error', '退勤済みの勤怠のみ修正できます')
                 ->withInput(); // 入力を保持
         }
 
@@ -89,7 +88,7 @@ class AdminAttendanceController extends Controller
                 // 休憩情報の更新
                 foreach ($request->input('breaks', []) as $breakId => $data) {
 
-                    // 値が両方とも空ならスキップ
+                    // 値が両方とも空ならスキップ ※ 新規登録のみあり得る
                     if (empty($data['break_start_at']) && empty($data['break_end_at'])) {
                         continue;
                     }
@@ -123,24 +122,27 @@ class AdminAttendanceController extends Controller
                 $working_minutes = $clock_in_at->diffinminutes($clock_out_at);
                 $attendance->working_minutes = $working_minutes - $break_minutes;
 
-                $attendance->is_pending_approval = true; // 承認待ちフラグ
+                // $attendance->is_pending_approval = true; // 承認待ちフラグ // 20251105
                 $attendance->save();
 
-                // 勤怠修正申請情報を登録
-                AttendanceCorrectionRequest::create([
-                    'attendance_id' => $attendance->id,
-                    'requested_at'  => Carbon::now(),
-                ]);
+                // == 20251105 == //
+                // // 勤怠修正申請情報を登録
+                // AttendanceCorrectionRequest::create([
+                //     'attendance_id' => $attendance->id,
+                //     'requested_at'  => Carbon::now(),
+                // ]);
+                // == 20251105 == //
             });
         } catch (Throwable $e) {
             Log::error('勤怠更新に失敗しました: ' . $e->getMessage(), [
-                'user_id' => Auth::User()->id,
+                'user_id'       => Auth::User()->id,
                 'attendance_id' => $id,
-                'trace' => $e->getTraceAsString(),
+                'trace'         => $e->getTraceAsString(),
             ]);
 
             return back()
-                ->withErrors(['error' => '更新処理中にエラーが発生しました。時間をおいて再度お試しください。'])
+                // ->withErrors(['error' => '更新処理中にエラーが発生しました。時間をおいて再度お試しください。']) // 20251105
+                ->with('error', '更新処理中にエラーが発生しました。時間をおいて再度お試しください。')              // 20251105
                 ->withInput();
         }
 
@@ -188,12 +190,13 @@ class AdminAttendanceController extends Controller
 
         $attendances = collect();
         foreach ($period as $date) {
-            $dateKey = $date->toDateString();
+            $dateKey = $date->toDateString(); // 日付文字列（YYYY-MM-DD）
             if ($attendanceMap->has($dateKey)) {
                 $attendances->push($attendanceMap->get($dateKey));
                 continue;
             }
 
+            // ダミーデータ
             $placeholder = new Attendance([
                 'user_id'   => $userId,
                 'work_date' => $date->copy(),

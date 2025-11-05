@@ -126,7 +126,7 @@ Route::prefix('admin')
                 ->controller(AdminStaffController::class)->group(function () {
                     Route::get('/list', 'list')->name('list');
                 });
-        });
+            });
     });
 
 /*
@@ -139,6 +139,7 @@ Route::middleware('admin')
     ->name('admin.request.')
     ->controller(AdminRequestController::class)->group(function () {
         Route::get('/approve/{attendance_correct_request_id}', 'approve')->name('approve');
+        Route::put('/approve/{attendance_correct_request_id}', 'update') ->name('approve.update');
     });
 
 Route::get("/", function() {

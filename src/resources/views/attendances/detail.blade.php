@@ -35,13 +35,19 @@
                 <div class="attendance-detail__label">出勤・退勤</div>
                 <div class="attendance-detail__value">
                     <div class="input-pair">
-                        <input type="text"
-                            name="clock_in_at"
-                            value="{{ old('clock_in_at', substr($attendance->clock_in_at ?? '', 0, 5)) }}">
-                        <span>〜</span>
-                        <input type="text"
-                            name="clock_out_at"
-                            value="{{ old('clock_out_at', substr($attendance->clock_out_at ?? '', 0, 5)) }}">
+                        <div class="attendance-detail__value_start">
+                            <input type="text"
+                                name="clock_in_at"
+                                value="{{ old('clock_in_at', substr($attendance->clock_in_at ?? '', 0, 5)) }}">
+                        </div>
+                        <div class="attendance-detail__value_delim">
+                            <span>〜</span>
+                        </div>
+                        <div class="attendance-detail__value_end">
+                            <input type="text"
+                                name="clock_out_at"
+                                value="{{ old('clock_out_at', substr($attendance->clock_out_at ?? '', 0, 5)) }}">
+                        </div>
                     </div>
 
                     {{-- エラーメッセージを下にまとめて表示 --}}
@@ -67,14 +73,19 @@
                 </div>
                 <div class="attendance-detail__value">
                     <div class="input-pair">
-                        <input type="text"
-                            name="breaks[{{ $breakId }}][break_start_at]"
-                            value="{{ old("breaks.$breakId.break_start_at", substr($break->break_start_at ?? '', 0, 5)) }}">
-
-                        <span>〜</span>
-                        <input type="text"
-                            name="breaks[{{ $breakId }}][break_end_at]"
-                            value="{{ old("breaks.$breakId.break_end_at", substr($break->break_end_at ?? '', 0, 5)) }}">
+                        <div class="attendance-detail__value_start">
+                            <input type="text"
+                                name="breaks[{{ $breakId }}][break_start_at]"
+                                value="{{ old("breaks.$breakId.break_start_at", substr($break->break_start_at ?? '', 0, 5)) }}">
+                        </div>
+                        <div class="attendance-detail__value_delim">
+                            <span>〜</span>
+                        </div>
+                        <div class="attendance-detail__value_end">
+                            <input type="text"
+                                name="breaks[{{ $breakId }}][break_end_at]"
+                                value="{{ old("breaks.$breakId.break_end_at", substr($break->break_end_at ?? '', 0, 5)) }}">
+                        </div>
                     </div>
 
                     {{-- エラーメッセージを下にまとめて表示 --}}
@@ -96,13 +107,19 @@
                 </div>
                 <div class="attendance-detail__value">
                     <div class="input-pair">
-                        <input type="text"
-                            name="breaks[new][break_start_at]"
-                            value="{{ old('breaks.new.break_start_at') }}">
-                        <span>〜</span>
-                        <input type="text"
-                            name="breaks[new][break_end_at]"
-                            value="{{ old('breaks.new.break_end_at') }}">
+                        <div class="attendance-detail__value_start">
+                            <input type="text"
+                                name="breaks[new][break_start_at]"
+                                value="{{ old('breaks.new.break_start_at') }}">
+                        </div>
+                        <div class="attendance-detail__value_delim">
+                            <span>〜</span>
+                        </div>
+                        <div class="attendance-detail__value_end">
+                            <input type="text"
+                                name="breaks[new][break_end_at]"
+                                value="{{ old('breaks.new.break_end_at') }}">
+                        </div>
                     </div>
 
                     {{-- エラーメッセージを下にまとめて表示 --}}
