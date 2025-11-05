@@ -43,7 +43,25 @@ class AttendanceCorrectionRequestSeeder extends Seeder
                 'requested_at' => '2025-10-05 10:00:00',
                 'approved_by' => 1,
                 'approved_at' => '2025-10-05 18:00:00',
-            ]
+            ],
+            [
+                'attendance_id' => 6,
+                'requested_at' => '2025-10-05 10:00:00',
+            ],
+            [
+                'attendance_id' => 26,
+                'requested_at' => '2025-10-05 10:00:00',
+                'approved_by' => 1,
+                'approved_at' => '2025-10-05 18:00:00',
+            ],
+            [
+                'attendance_id' => 27,
+                'requested_at' => '2025-10-05 10:00:00',
+            ],
+            [
+                'attendance_id' => 28,
+                'requested_at' => '2025-10-05 10:00:00',
+            ],
         ];
 
         foreach ($contents as $content) {

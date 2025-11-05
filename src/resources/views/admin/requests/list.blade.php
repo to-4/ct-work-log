@@ -34,7 +34,7 @@
             @forelse ($requests as $request)
             <tr>
                 <td>{{ $request->approved_at ? '承認済み' : '承認待ち' }}</td>
-                <td>{{ $request->attendance->user->name ?? '-' }}</td>
+                <td>{{ str_replace([' ', '　'], '', ($request->attendance->user->name ?? '-')) }}</td>
                 <td>{{ optional($request->attendance->work_date)->format('Y/m/d') }}</td>
                 <td>{{ $request->attendance->note ?? '-' }}</td>
                 <td>{{ optional($request->requested_at)->format('Y/m/d') }}</td>
