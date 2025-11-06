@@ -1,0 +1,103 @@
+/* =============================
+   メール認証画面スタイル
+   ============================= */
+
+.verify-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background: #f9fafb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.verify-box {
+    background: #fff;
+    padding: 48px 60px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.verify-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #111;
+}
+
+.verify-text {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+/* 入力グループ */
+.input-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.verify-input {
+    width: 160px;
+    padding: 10px 14px;
+    font-size: 18px;
+    letter-spacing: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.verify-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* メインボタン */
+.btn-verify {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-verify:hover {
+    background-color: #0056b3;
+}
+
+/* エラーメッセージ */
+.error-message {
+    color: #d9534f;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+/* 再送ボタン */
+.resend-form {
+    margin-top: 20px;
+}
+
+.btn-resend {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-resend:hover {
+    color: #0056b3;
+}

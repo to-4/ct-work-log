@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@coachtech.com',
                 'password' => Hash::make('pass'),
                 'is_admin' => true,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 2,
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
                 'email' => 'reina.n@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 3,
@@ -35,6 +37,7 @@ class UserSeeder extends Seeder
                 'email' => 'taro.y@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 4,
@@ -42,6 +45,7 @@ class UserSeeder extends Seeder
                 'email' => 'issei.m@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 5,
@@ -49,6 +53,7 @@ class UserSeeder extends Seeder
                 'email' => 'keikichi.y@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 6,
@@ -56,6 +61,7 @@ class UserSeeder extends Seeder
                 'email' => 'tomomi.a@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
             [
                 'id' => 7,
@@ -63,6 +69,7 @@ class UserSeeder extends Seeder
                 'email' => 'norio.n@coachtech.com',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => '2025-10-05 10:00:00',
             ],
         ];
 

@@ -122,16 +122,8 @@ class AdminAttendanceController extends Controller
                 $working_minutes = $clock_in_at->diffinminutes($clock_out_at);
                 $attendance->working_minutes = $working_minutes - $break_minutes;
 
-                // $attendance->is_pending_approval = true; // 承認待ちフラグ // 20251105
                 $attendance->save();
 
-                // == 20251105 == //
-                // // 勤怠修正申請情報を登録
-                // AttendanceCorrectionRequest::create([
-                //     'attendance_id' => $attendance->id,
-                //     'requested_at'  => Carbon::now(),
-                // ]);
-                // == 20251105 == //
             });
         } catch (Throwable $e) {
             Log::error('勤怠更新に失敗しました: ' . $e->getMessage(), [
@@ -141,8 +133,7 @@ class AdminAttendanceController extends Controller
             ]);
 
             return back()
-                // ->withErrors(['error' => '更新処理中にエラーが発生しました。時間をおいて再度お試しください。']) // 20251105
-                ->with('error', '更新処理中にエラーが発生しました。時間をおいて再度お試しください。')              // 20251105
+                ->with('error', '更新処理中にエラーが発生しました。時間をおいて再度お試しください') 
                 ->withInput();
         }
 
