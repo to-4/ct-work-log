@@ -123,14 +123,15 @@ Route::prefix('admin')
                     Route::get('/detail/{id}',     'detail')    ->name('detail');
                     Route::get('/staff/list/{id}', 'staff_list')->name('staff_list');
                     Route::put('/detail/{id}',     'update')    ->name('detail.update');
+                    Route::get('/export',          'export')    ->name('export');
             });
 
             Route::prefix('/staff')
                 ->name('staff.')
                 ->controller(AdminStaffController::class)->group(function () {
                     Route::get('/list', 'list')->name('list');
-                });
             });
+        });
     });
 
 /*

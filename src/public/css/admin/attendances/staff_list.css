@@ -46,3 +46,25 @@
     color: #000;
     font-size: 20px;
 }
+
+/* CSV出力ボタン */
+.attendance-detail__actions {
+    text-align: right;
+    margin-top: 44px;
+}
+
+.attendance-detail__actions button {
+    background-color: #000;
+    color: #fff;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 4px;
+    font-size: 22px;
+    /* font-weight: 600; */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.attendance-detail__actions button:hover {
+    background-color: #333;
+}

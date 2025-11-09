@@ -204,4 +204,89 @@ class AdminAttendanceController extends Controller
             'user'
         ));
     }
+
+    /**
+     * CSVファイルをダウンロード
+     *
+     */
+    public function export(Request $request)
+    {
+        // 1. 一覧画面と同じ条件でデータ取得
+        // ユーザーIDと対象年月取得
+        $userId         = $request->query('id');
+        /** @var User $user */
+        $user = User::where('id', $userId)->first(); // ユーザ情報
+
+        $targetMonthStr = $request->query('month');
+        $targetMonth    = Carbon::createFromFormat('Y-m', $targetMonthStr);
+
+        // 2. 勤怠情報（Collection）を取得
+        //    - key: YYYY-MM-DD, value: Attendance
+        $attendanceMap = Attendance::where('user_id', $userId)
+            ->whereMonth('work_date', $targetMonth->month)
+            ->whereYear('work_date', $targetMonth->year)
+            ->orderby('work_date')
+            ->get()
+            ->keyBy(function (Attendance $attendance) {
+                return $attendance->work_date->toDateString();
+            });
+
+        // 当月の全日付分の勤怠情報を生成（未登録日は work_date のみを持つ新インスタンスを作成）
+        $period = CarbonPeriod::create(
+            $targetMonth->copy()->startOfMonth(),
+            $targetMonth->copy()->endOfMonth()
+        );
+
+        $attendances = collect();
+        foreach ($period as $date) {
+            $dateKey = $date->toDateString(); // 日付文字列（YYYY-MM-DD）
+            if ($attendanceMap->has($dateKey)) {
+                $attendances->push($attendanceMap->get($dateKey));
+                continue;
+            }
+
+            // ダミーデータ
+            $placeholder = new Attendance([
+                'user_id'   => $userId,
+                'work_date' => $date->copy(),
+            ]);
+            $attendances->push($placeholder);
+        }
+
+
+        // 2. CSV出力処理
+        $fileName = 'attendances_' . now()->format('Ymd_His') . '.csv';
+
+        $callback = function () use ($attendances, $user) {
+            $handle = fopen('php://output', 'w');
+            // Excel用にUTF-8 BOMを付加（文字化け対策）
+            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+            // ヘッダー行
+            fputcsv($handle, [$user->name . 'さんの勤怠']);
+            fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
+
+            /** @var Attendance $a */
+            foreach ($attendances as $a) {
+                $workingDate = $a->work_date->format('Y-m-d');
+                $workingMinutes = $a->working_minutes
+                    ? floor($a->working_minutes / 60)
+                        . ':'
+                        . str_pad($a->working_minutes % 60, 2, '0', STR_PAD_LEFT)
+                    : '';
+                fputcsv($handle, [
+                    $workingDate,
+                    $a->clock_in_at,
+                    $a->clock_out_at,
+                    $workingMinutes,
+                ]);
+            }
+            fclose($handle);
+        };
+
+        // 3. CSVをダウンロードとして返す
+        //    一時ファイルを作らずに直接出力（'Content-Disposition' は自動付与）
+        return response()->streamDownload($callback, $fileName, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
 }

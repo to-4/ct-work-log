@@ -53,5 +53,12 @@
             @endforeach
         </tbody>
     </table>
+    <form action="{{ route('admin.attendance.export') }}" method="GET">
+        <input type="hidden" name="id" value="{{ $user->id }}">
+        <input type="hidden" name="month" value="{{ $targetMonth->format('Y-m') }}">
+        <div class="attendance-detail__actions">
+            <button type=" submit" class="btn btn-primary">CSV出力</button>
+        </div>
+    </form>
 </main>
 @endsection
