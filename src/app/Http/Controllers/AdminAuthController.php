@@ -49,7 +49,7 @@ class AdminAuthController extends Controller
 
         // ここでは「認証失敗」を email フィールドのエラーとして返す（項目下に出せる）
         throw ValidationException::withMessages([
-            'email' => 'メールアドレスまたはパスワードが正しくありません。',
+            'email' => 'ログイン情報が登録されていません。',
         ]);
     }
 
