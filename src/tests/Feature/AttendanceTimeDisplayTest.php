@@ -13,7 +13,7 @@ class AttendanceTimeDisplayTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_current_time_is_displayed_correctly_on_attendance_page(): void
+    public function current_time_is_displayed_correctly_on_attendance_page(): void
     {
         // 1. 一般ユーザーを作成
         $user = User::factory()->create([

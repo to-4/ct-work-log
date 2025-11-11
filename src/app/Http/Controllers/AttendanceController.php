@@ -287,10 +287,6 @@ class AttendanceController extends Controller
         // 更新
         try {
 
-            // 勤怠情報を更新
-            $attendance->attendance_status_id = AttendanceStatus::WORKING; // 勤務中ステータス
-            $attendance->save();
-
             /** @var AttendanceBreak $break */
             $break = $attendance->attendanceBreaks()
                 ->where('break_end_at', null)
@@ -300,6 +296,13 @@ class AttendanceController extends Controller
             $break->break_minutes = AttendanceBreak::getBreakMinutes($break); // 休憩時間
 
             $break->save();
+
+            // 勤怠情報を更新
+            $break_minutes = AttendanceBreak::sumBreakMinutes($attendance->attendanceBreaks);
+            $attendance->break_minutes = $break_minutes; // 休憩時間
+            $attendance->attendance_status_id = AttendanceStatus::WORKING; // 勤務中ステータス
+
+            $attendance->save();
         } catch (\Throwable $e) {
             Log::error('Attendance break end failed: ' . $e->getMessage());
             return back()->with('error', '休憩終了に失敗しました');

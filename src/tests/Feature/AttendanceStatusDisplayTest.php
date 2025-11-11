@@ -16,7 +16,7 @@ class AttendanceStatusDisplayTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_attendance_status_off_is_displayed_correctly(): void
+    public function attendance_status_off_is_displayed_correctly(): void
     {
         // 1. ステータスデータを作成（ID=1 が「勤務外」）
         $status = AttendanceStatus::factory()->create([
@@ -46,7 +46,7 @@ class AttendanceStatusDisplayTest extends TestCase
     }
 
     #[Test]
-    public function test_attendance_status_working_is_displayed_correctly(): void
+    public function attendance_status_working_is_displayed_correctly(): void
     {
         // 1. ステータスデータを作成（ID=2 が「出勤中」）
         $status = AttendanceStatus::factory()->create([
@@ -76,7 +76,7 @@ class AttendanceStatusDisplayTest extends TestCase
     }
 
     #[Test]
-    public function test_attendance_status_on_break_is_displayed_correctly(): void
+    public function attendance_status_on_break_is_displayed_correctly(): void
     {
         // 1. ステータスデータを作成（ID=3 が「休憩中」）
         $status = AttendanceStatus::factory()->create([
@@ -106,7 +106,7 @@ class AttendanceStatusDisplayTest extends TestCase
     }
 
     #[Test]
-    public function test_attendance_status_completed_is_displayed_correctly(): void
+    public function attendance_status_completed_is_displayed_correctly(): void
     {
         // 1. ステータスデータを作成（ID=4 が「退勤済」）
         $status = AttendanceStatus::factory()->create([
