@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Carbon\Carbon;
