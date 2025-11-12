@@ -59,7 +59,7 @@ class AttendanceUpdateTest extends TestCase
         $response = $this->followingRedirects()
             ->put(route('attendance.detail.update', $attendance->id), $formData);
 
-        $response->assertSee('出勤時間が不適切な値です');
+        $response->assertSee('出勤時間もしくは退勤時間が不適切な値です');
     }
 
     #[Test]
@@ -243,6 +243,7 @@ class AttendanceUpdateTest extends TestCase
             'name' => '退勤済',
         ]);
 
+        /** @var Attendance @attendance */
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
             'attendance_status_id' => $statusFinished->id,
@@ -278,7 +279,8 @@ class AttendanceUpdateTest extends TestCase
         $listResponse->assertSee('修正申請テスト'); // 申請理由が表示
 
         // 6. 承認画面（個別詳細）でも表示されていることを確認
-        $approveResponse = $this->get(route('admin.request.approve', ['attendance_correct_request_id' => 1]));
+        $requestId = $attendance->attendanceCorrectionRequests->first()->id;
+        $approveResponse = $this->get(route('admin.request.approve', ['attendance_correct_request_id' => $requestId]));
         $approveResponse->assertStatus(200);
         $approveResponse->assertSee('修正申請テスト');
     }

@@ -88,8 +88,8 @@ class AttendanceDetailDisplayTest extends TestCase
 
         // 7. 日付欄に登録された日付（work_date）が表示されていることを確認
         $response->assertSee($attendance->work_date->format('Y年'));
-        $response->assertSee($attendance->work_date->format('m月'));
-        $response->assertSee($attendance->work_date->format('d日'));
+        $response->assertSee($attendance->work_date->format('n月'));
+        $response->assertSee($attendance->work_date->format('j日'));
     }
 
     #[Test]

@@ -74,7 +74,7 @@ class UpdateAttendanceRequest extends FormRequest
             $clockOut = $this->input('clock_out_at');
 
             if ($clockIn && $clockOut && $clockIn > $clockOut) {
-                $validator->errors()->add('clock_in_at', '出勤時間が不適切な値です');
+                $validator->errors()->add('clock_in_at', '出勤時間もしくは退勤時間が不適切な値です');
             }
 
             $breaks = $this->input('breaks', []);
