@@ -21,7 +21,7 @@ jobs:
       - name: Prepare testing environment
         run: |
           cp src/.env.testing.example src/.env.testing
-          docker compose up -d -- build
+          docker compose up -d --build
           docker compose exec php php artisan key:generate --env=testing
 
       # 4. DBの起動待ち（MySQL準備完了まで）
