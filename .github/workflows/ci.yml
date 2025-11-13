@@ -27,6 +27,12 @@ jobs:
           cd src
           composer install --no-interaction --prefer-dist --no-progress
 
+      # パーミッション調整（最重要）
+      - name: Fix permissions for Laravel
+        run: |
+          chmod -R 777 src/storage src/bootstrap/cache
+          chmod 666 src/.env.testing.example || true
+
       # 5. .env.testing を作成
       - name: Prepare testing environment
         run: |
