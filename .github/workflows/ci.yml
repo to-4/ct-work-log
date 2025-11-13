@@ -37,6 +37,7 @@ jobs:
       - name: Prepare testing environment
         run: |
           cp src/.env.testing.example src/.env.testing
+          chmod 666 src/.env.testing
           docker compose exec php php artisan key:generate --env=testing
 
       # 6. DBの起動待ち（MySQL準備完了まで）
