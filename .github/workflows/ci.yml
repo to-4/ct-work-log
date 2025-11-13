@@ -23,7 +23,9 @@ jobs:
 
       # 4. Install composer vendor
       - name: Install dependencies (composer install)
-        run: docker compose exec php composer install --no-interaction --prefer-dist
+        run: |
+          cd src
+          composer install --no-interaction --prefer-dist --no-progress
 
       # 5. .env.testing を作成
       - name: Prepare testing environment
