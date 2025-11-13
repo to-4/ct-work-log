@@ -1,0 +1,42 @@
+name: Laravel PHPUnit CI (Docker + .env.testing)
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. コード取得
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      # 2. Docker Compose バージョン確認（オプション）
+      - name: Check Docker Compose
+        run: docker compose version
+
+      # 3. .env.testing を作成
+      - name: Prepare testing environment
+        run: |
+          cp .env.testing.example .env.testing
+          docker compose up -d -- build
+          docker compose exec php php artisan key:generate --env=testing
+
+      # 4. DBの起動待ち（MySQL準備完了まで）
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec $(docker ps -qf "name=mysql") mysqladmin ping -h"mysql" --silent; do
+            echo "Waiting for database connection..."
+            sleep 5
+          done
+
+      # 5. PHPUnit テスト実行
+      - name: Run PHPUnit tests
+        run: docker compose exec php vendor/bin/phpunit
+
+      # 6. 後片付け（停止・削除）
+      - name: Tear down containers
+        if: always()
+        run: docker compose down -v
