@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceClockInTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function clock_in_button_changes_status_to_working(): void

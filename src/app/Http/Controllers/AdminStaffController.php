@@ -6,10 +6,8 @@ use App\Models\User;
 
 class AdminStaffController extends Controller
 {
-
     /**
      * スタッフ一覧表示
-     *
      */
     public function list()
     {
@@ -18,5 +16,4 @@ class AdminStaffController extends Controller
 
         return view('admin.staffs.list', compact('users'));
     }
-
 }

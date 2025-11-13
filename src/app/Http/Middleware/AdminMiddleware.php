@@ -17,13 +17,13 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // 未ログインならログインページへ
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('admin.login')
                 ->with('error', 'ログインしてください。');
         }
 
         // 管理者でなければ一般ユーザー用ページへ
-        if (!Auth::user()->is_admin) {
+        if (! Auth::user()->is_admin) {
             return redirect()->route('attendance.list')
                 ->with('error', '管理者権限がありません。');
         }

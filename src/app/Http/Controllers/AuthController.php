@@ -26,7 +26,6 @@ class AuthController extends Controller
     /**
      * 登録処理
      *
-     * @param StoreUserRequest $request
      * @return void
      */
     public function store(StoreUserRequest $request)
@@ -35,8 +34,8 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
+            'name' => $data['name'],
+            'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
@@ -76,7 +75,6 @@ class AuthController extends Controller
     /**
      * ログイン処理
      *
-     * @param LoginRequest $request
      * @return void
      */
     public function send(LoginRequest $request)
@@ -124,7 +122,6 @@ class AuthController extends Controller
     /**
      * ログアウト
      *
-     * @param Request $request
      * @return void
      */
     public function destroy(Request $request)
@@ -139,7 +136,6 @@ class AuthController extends Controller
     /**
      * 認証コードを検証
      *
-     * @param Request $request
      * @return void
      */
     public function verifyCode(Request $request)

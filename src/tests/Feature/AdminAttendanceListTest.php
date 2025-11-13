@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminAttendanceListTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_displays_all_users_attendance_records_for_today_correctly(): void

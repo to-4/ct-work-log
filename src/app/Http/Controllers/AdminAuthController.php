@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
@@ -25,7 +23,6 @@ class AdminAuthController extends Controller
      * ログイン処理
      * ※ FormRequest は、一般ユーザと共通とする
      *
-     * @param LoginRequest $request
      * @return void
      */
     public function send(LoginRequest $request)
@@ -56,7 +53,6 @@ class AdminAuthController extends Controller
     /**
      * ログアウト
      *
-     * @param Request $request
      * @return void
      */
     public function destroy(Request $request)

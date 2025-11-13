@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceTimeDisplayTest extends TestCase
 {

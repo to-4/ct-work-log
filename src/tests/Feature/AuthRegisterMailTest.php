@@ -3,16 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Mail\VerificationMail;
-use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AuthRegisterMailTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_sends_verification_mail_after_user_registration(): void

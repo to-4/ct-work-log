@@ -21,7 +21,7 @@ use App\Models\AttendanceStatus;
 
         {{-- 日付と時刻 --}}
         <div class="attendance__date">
-            {{ now()->format('Y年n月j日(D)') }}
+            {{ now()->format('Y年n月j日') . now()->isoFormat('(ddd)') }}
         </div>
 
         <div class="attendance__time">

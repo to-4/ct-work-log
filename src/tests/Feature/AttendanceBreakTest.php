@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceBreakTest extends TestCase
 {
-    Use refreshDatabase;
+    use refreshDatabase;
 
     #[Test]
     public function it_changes_status_to_breaking_after_pressing_break_button(): void
@@ -264,9 +264,9 @@ class AttendanceBreakTest extends TestCase
 
         // 7. 休憩レコードがDBに正しく保存されているか確認
         $this->assertDatabaseHas('attendance_breaks', [
-            'attendance_id'  => $attendance->id,
+            'attendance_id' => $attendance->id,
             'break_start_at' => $breakStart->format('H:i'),
-            'break_end_at'   => $breakEnd->format('H:i'),
+            'break_end_at' => $breakEnd->format('H:i'),
         ]);
 
         // 8. 勤怠一覧画面を取得

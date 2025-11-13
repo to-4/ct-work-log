@@ -26,7 +26,7 @@ class AttendanceCorrectionRequestFactory extends Factory
 
         // Fakerによるダミー日時生成
         $requestedAt = $this->faker->dateTimeBetween('-7 days', 'now');
-        $approvedAt  = (clone $requestedAt)->modify('+8 hours');
+        $approvedAt = (clone $requestedAt)->modify('+8 hours');
 
         return [
             'attendance_id' => $attendanceId,
@@ -34,4 +34,5 @@ class AttendanceCorrectionRequestFactory extends Factory
             'approved_by' => $approvedBy,
             'approved_at' => $approvedAt->format('Y-m-d H:i:s'),
         ];
-    }}
+    }
+}

@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminStaffListTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_displays_all_general_users_for_admin(): void

@@ -144,7 +144,7 @@ return [
     */
 
     'features' => [
-        //Features::registration(), // 独自検証を行うため
+        // Features::registration(), // 独自検証を行うため
         Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),

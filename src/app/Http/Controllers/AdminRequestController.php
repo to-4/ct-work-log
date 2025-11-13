@@ -13,7 +13,6 @@ class AdminRequestController extends Controller
 {
     /**
      * 承認画面を表示
-     *
      */
     public function approve(Request $request, $id)
     {
@@ -36,7 +35,6 @@ class AdminRequestController extends Controller
 
     /**
      * 承認画面：承認
-     *
      */
     public function update(Request $request, $id)
     {
@@ -64,7 +62,7 @@ class AdminRequestController extends Controller
                 $attendance->save();
             });
         } catch (Throwable $e) {
-            Log::error('Attendance correction approval failed: ' . $e->getMessage(), [
+            Log::error('Attendance correction approval failed: '.$e->getMessage(), [
                 'request_id' => $correctionRequest->id,
                 'admin_id' => Auth::id(),
                 'trace' => $e->getTraceAsString(),

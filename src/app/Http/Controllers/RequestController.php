@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attendance;
 use App\Models\AttendanceCorrectionRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class RequestController extends Controller
 {
-
     /**
      * 一覧画面を表示
      * ※ 管理者か一般ユーザで処理を分岐
-     *
      */
     public function list(Request $request)
     {
@@ -23,7 +19,7 @@ class RequestController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $query  = AttendanceCorrectionRequest::with(['attendance', 'attendance.user'])
+        $query = AttendanceCorrectionRequest::with(['attendance', 'attendance.user'])
             ->orderByDesc('requested_at');
 
         if ($status === 'pending') {
@@ -32,8 +28,7 @@ class RequestController extends Controller
             $query->whereNotNull('approved_at');
         }
 
-        if ($user->is_admin == false)
-        {
+        if ($user->is_admin == false) {
             $userId = $user->id;
             $query->whereHas('attendance', function ($q) use ($userId) {
                 $q->where('user_id', $userId);
@@ -44,8 +39,7 @@ class RequestController extends Controller
 
         if ($user->is_admin == false) {
             return view('requests.list', compact('requests', 'status'));
-        }
-        else {
+        } else {
             return view('admin.requests.list', compact('requests', 'status'));
         }
     }

@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
-use App\Models\AttendanceStatus;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminRequestListTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_displays_all_pending_requests_for_admin(): void

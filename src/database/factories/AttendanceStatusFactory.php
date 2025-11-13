@@ -17,7 +17,7 @@ class AttendanceStatusFactory extends Factory
     public function definition(): array
     {
         return [
-            'id'   => $this->faker->numberBetween(1, 4), // ステータスID
+            'id' => $this->faker->numberBetween(1, 4), // ステータスID
             'name' => $this->faker->name(),              // ステータス名
         ];
     }

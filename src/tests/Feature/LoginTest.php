@@ -102,5 +102,4 @@ class LoginTest extends TestCase
             ->post(route('login.post'), $formData)
             ->assertSee('ログイン情報が登録されていません');
     }
-
 }

@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
-use App\Models\AttendanceStatus;
 use App\Models\AttendanceBreak;
+use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AdminAttendanceDetailTest extends TestCase
 {
-    Use refreshDatabase;
+    use refreshDatabase;
 
     #[Test]
     public function it_displays_selected_attendance_detail_correctly_for_admin(): void
@@ -121,7 +121,7 @@ class AdminAttendanceDetailTest extends TestCase
 
         // 7. 不正データ（出勤 19:00 > 退勤 18:00）を送信
         $formData = [
-            'clock_in_at'  => '19:00',
+            'clock_in_at' => '19:00',
             'clock_out_at' => '18:00',
             'note' => '不正テスト',
         ];
@@ -174,13 +174,13 @@ class AdminAttendanceDetailTest extends TestCase
 
         // 6. 不正データ送信（休憩開始19:00 / 終了19:30 → 退勤後）
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
             'note' => 'テスト備考',
             'breaks' => [
                 'new' => [
                     'break_start_at' => '19:00',
-                    'break_end_at'   => '19:30',
+                    'break_end_at' => '19:30',
                 ],
             ],
         ];
@@ -236,13 +236,13 @@ class AdminAttendanceDetailTest extends TestCase
 
         // 6. 不正データ送信（休憩終了が退勤後）
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
             'note' => 'テスト',
             'breaks' => [
                 'new' => [
                     'break_start_at' => '17:30',
-                    'break_end_at'   => '19:30', // ← 退勤後の不正値
+                    'break_end_at' => '19:30', // ← 退勤後の不正値
                 ],
             ],
         ];
@@ -299,7 +299,7 @@ class AdminAttendanceDetailTest extends TestCase
 
         // 6. 備考未入力のデータで更新リクエスト送信
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
             'note' => '', // ← 未入力
             'breaks' => [],

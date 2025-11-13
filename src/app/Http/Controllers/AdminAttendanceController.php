@@ -25,9 +25,9 @@ class AdminAttendanceController extends Controller
     public function list(Request $request)
     {
         $targetDateStr = $request->query('date', Carbon::now()->format('Y-m-d'));
-        $targetDate    = Carbon::createFromFormat('Y-m-d', $targetDateStr);
-        $prevDate      = $targetDate->copy()->subDay();
-        $nextDate      = $targetDate->copy()->addDay();
+        $targetDate = Carbon::createFromFormat('Y-m-d', $targetDateStr);
+        $prevDate = $targetDate->copy()->subDay();
+        $nextDate = $targetDate->copy()->addDay();
 
         $attendances = Attendance::with('user')
             ->whereDate('work_date', $targetDateStr)
@@ -93,7 +93,7 @@ class AdminAttendanceController extends Controller
                         continue;
                     }
 
-                    $break = new AttendanceBreak();
+                    $break = new AttendanceBreak;
                     if ($breakId != 'new') {
                         $break = $attendance->attendanceBreaks()->find($breakId); // 既存情報を取得
                     }
@@ -101,15 +101,15 @@ class AdminAttendanceController extends Controller
                     // 休憩情報の新規登録/更新
                     $break = $attendance->attendanceBreaks()->find($breakId);
                     $break->break_start_at = $data['break_start_at'];
-                    $break->break_end_at   = $data['break_end_at'];
-                    $break->break_minutes  = AttendanceBreak::getBreakMinutes($break);
+                    $break->break_end_at = $data['break_end_at'];
+                    $break->break_minutes = AttendanceBreak::getBreakMinutes($break);
                     $break->save();
                 }
 
                 // 勤怠情報を更新
-                $attendance->clock_in_at  = $request->input('clock_in_at');
+                $attendance->clock_in_at = $request->input('clock_in_at');
                 $attendance->clock_out_at = $request->input('clock_out_at');
-                $attendance->note         = $request->input('note');
+                $attendance->note = $request->input('note');
 
                 // 休憩時間を再集計
                 $attendance->load('attendanceBreaks');
@@ -117,7 +117,7 @@ class AdminAttendanceController extends Controller
                 $attendance->break_minutes = $break_minutes;
 
                 // 勤務時間を再集計
-                $clock_in_at  = Carbon::createFromFormat('H:i', $attendance->clock_in_at);
+                $clock_in_at = Carbon::createFromFormat('H:i', $attendance->clock_in_at);
                 $clock_out_at = Carbon::createFromFormat('H:i', $attendance->clock_out_at);
                 $working_minutes = $clock_in_at->diffinminutes($clock_out_at);
                 $attendance->working_minutes = $working_minutes - $break_minutes;
@@ -126,14 +126,14 @@ class AdminAttendanceController extends Controller
 
             });
         } catch (Throwable $e) {
-            Log::error('勤怠更新に失敗しました: ' . $e->getMessage(), [
-                'user_id'       => Auth::User()->id,
+            Log::error('勤怠更新に失敗しました: '.$e->getMessage(), [
+                'user_id' => Auth::User()->id,
                 'attendance_id' => $id,
-                'trace'         => $e->getTraceAsString(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return back()
-                ->with('error', '更新処理中にエラーが発生しました。時間をおいて再度お試しください') 
+                ->with('error', '更新処理中にエラーが発生しました。時間をおいて再度お試しください')
                 ->withInput();
         }
 
@@ -184,12 +184,13 @@ class AdminAttendanceController extends Controller
             $dateKey = $date->toDateString(); // 日付文字列（YYYY-MM-DD）
             if ($attendanceMap->has($dateKey)) {
                 $attendances->push($attendanceMap->get($dateKey));
+
                 continue;
             }
 
             // ダミーデータ
             $placeholder = new Attendance([
-                'user_id'   => $userId,
+                'user_id' => $userId,
                 'work_date' => $date->copy(),
             ]);
             $attendances->push($placeholder);
@@ -207,18 +208,17 @@ class AdminAttendanceController extends Controller
 
     /**
      * CSVファイルをダウンロード
-     *
      */
     public function export(Request $request)
     {
         // 1. 一覧画面と同じ条件でデータ取得
         // ユーザーIDと対象年月取得
-        $userId         = $request->query('id');
+        $userId = $request->query('id');
         /** @var User $user */
         $user = User::where('id', $userId)->first(); // ユーザ情報
 
         $targetMonthStr = $request->query('month');
-        $targetMonth    = Carbon::createFromFormat('Y-m', $targetMonthStr);
+        $targetMonth = Carbon::createFromFormat('Y-m', $targetMonthStr);
 
         // 2. 勤怠情報（Collection）を取得
         //    - key: YYYY-MM-DD, value: Attendance
@@ -242,27 +242,27 @@ class AdminAttendanceController extends Controller
             $dateKey = $date->toDateString(); // 日付文字列（YYYY-MM-DD）
             if ($attendanceMap->has($dateKey)) {
                 $attendances->push($attendanceMap->get($dateKey));
+
                 continue;
             }
 
             // ダミーデータ
             $placeholder = new Attendance([
-                'user_id'   => $userId,
+                'user_id' => $userId,
                 'work_date' => $date->copy(),
             ]);
             $attendances->push($placeholder);
         }
 
-
         // 2. CSV出力処理
-        $fileName = 'attendances_' . now()->format('Ymd_His') . '.csv';
+        $fileName = 'attendances_'.now()->format('Ymd_His').'.csv';
 
         $callback = function () use ($attendances, $user) {
             $handle = fopen('php://output', 'w');
             // Excel用にUTF-8 BOMを付加（文字化け対策）
-            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+            fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
             // ヘッダー行
-            fputcsv($handle, [$user->name . 'さんの勤怠']);
+            fputcsv($handle, [$user->name.'さんの勤怠']);
             fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
             /** @var Attendance $a */
@@ -270,8 +270,8 @@ class AdminAttendanceController extends Controller
                 $workingDate = $a->work_date->format('Y-m-d');
                 $workingMinutes = $a->working_minutes
                     ? floor($a->working_minutes / 60)
-                        . ':'
-                        . str_pad($a->working_minutes % 60, 2, '0', STR_PAD_LEFT)
+                        .':'
+                        .str_pad($a->working_minutes % 60, 2, '0', STR_PAD_LEFT)
                     : '';
                 fputcsv($handle, [
                     $workingDate,

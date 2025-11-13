@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon; // 日付操作ライブラリ
+use Illuminate\Database\Eloquent\Model; // 日付操作ライブラリ
 
 /**
  * AttendanceCorrectionRequest model
@@ -16,25 +16,19 @@ use Carbon\Carbon; // 日付操作ライブラリ
  * Properties:
  *
  * @property int $id
- *     主キーID（自動採番）
- *
+ *                   主キーID（自動採番）
  * @property BIGINT UNSIGNED $attendance_id
  *     勤怠情報ID
- *
  * @property TIMESTAMP $requested_at
- *     申請日時
- *
+ *                                   申請日時
  * @property BIGINT UNSIGNED|null $approved_by
  *     承認ユーザーID
- *
  * @property TIMESTAMP|null $approved_at
- *     承認日時
- *
+ *                                       承認日時
  * @property Carbon|null $created_at
- *     タスクが作成された日時（Laravelが自動で管理）
- *
+ *                                   タスクが作成された日時（Laravelが自動で管理）
  * @property Carbon|null $updated_at
- *     タスクが最後に更新された日時（Laravelが自動で管理）
+ *                                   タスクが最後に更新された日時（Laravelが自動で管理）
  */
 class AttendanceCorrectionRequest extends Model
 {

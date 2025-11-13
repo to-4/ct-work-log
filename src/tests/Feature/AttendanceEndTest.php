@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceEndTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_changes_status_to_finished_after_pressing_end_button(): void

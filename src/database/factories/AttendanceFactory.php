@@ -22,7 +22,7 @@ class AttendanceFactory extends Factory
         $workDate = $this->faker->dateTimeBetween('-1 month', 'now');
 
         // 出勤・退勤時刻（同一日の中で整合性を保つ）
-        $clockIn  = (clone $workDate)->setTime(9, 0, 0);
+        $clockIn = (clone $workDate)->setTime(9, 0, 0);
         $clockOut = (clone $workDate)->setTime(18, 0, 0);
 
         // 勤務時間（9時間 = 540分）

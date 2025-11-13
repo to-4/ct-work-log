@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceStatusDisplayTest extends TestCase
 {
@@ -42,7 +41,7 @@ class AttendanceStatusDisplayTest extends TestCase
 
         // 6. ステータス「勤務外」が画面に表示されているか確認
         $response->assertStatus(200)
-                ->assertSee('勤務外');
+            ->assertSee('勤務外');
     }
 
     #[Test]

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
-use Carbon\Carbon;
 
 /**
  * AttendanceBreak model
@@ -17,29 +17,23 @@ use Carbon\Carbon;
  * Properties:
  *
  * @property int $id
- *     主キーID（自動採番）
- *
+ *                   主キーID（自動採番）
  * @property BIGINT UNSIGNED $attendance_id
  *     勤怠データID
- *
  * @property TIME $break_start_at
- *     休憩開始時刻
- *     HH:mm ※ 秒は切り捨て
- *
+ *                                休憩開始時刻
+ *                                HH:mm ※ 秒は切り捨て
  * @property TIME|null $break_end_at
- *     休憩終了時刻
- *     HH:mm ※ 秒は切り捨て
- *
- * @property INT|null $break_minutes
- *     休憩時間
- *     単位：分
- *     一覧・集計画面で頻繁に使用するため、再計算を避けるためテーブルに記録
- *
+ *                                   休憩終了時刻
+ *                                   HH:mm ※ 秒は切り捨て
+ * @property int|null $break_minutes
+ *                                   休憩時間
+ *                                   単位：分
+ *                                   一覧・集計画面で頻繁に使用するため、再計算を避けるためテーブルに記録
  * @property Carbon|null $created_at
- *     タスクが作成された日時（Laravelが自動で管理）
- *
+ *                                   タスクが作成された日時（Laravelが自動で管理）
  * @property Carbon|null $updated_at
- *     タスクが最後に更新された日時（Laravelが自動で管理）
+ *                                   タスクが最後に更新された日時（Laravelが自動で管理）
  */
 class AttendanceBreak extends Model
 {
@@ -71,8 +65,7 @@ class AttendanceBreak extends Model
     /**
      * AttendanceBreak コレクションから break_minutes を集計
      *
-     * @param Collection(self) $breaks
-     * @return integer
+     * @param  Collection(self)  $breaks
      */
     public static function sumBreakMinutes(Collection $breaks): int
     {
@@ -87,14 +80,11 @@ class AttendanceBreak extends Model
      * AttendanceBreak を基に、break_minutes を取得
      * ※1. 開始時刻または終了時刻が存在しない場合は、0 を返す
      * ※2. 例外発生時は、0 を返す
-     *
-     * @param self $break
-     * @return integer
      */
     public static function getBreakMinutes(self $break): int
     {
         $start = $break->break_start_at;
-        $end   = $break->break_end_at;
+        $end = $break->break_end_at;
 
         // null または 空文字をチェック
         if (empty($start) || empty($end)) {
@@ -103,10 +93,10 @@ class AttendanceBreak extends Model
 
         try {
             $break_start_at = Carbon::createFromFormat('H:i', $start);
-            $break_end_at   = Carbon::createFromFormat('H:i', $end);
+            $break_end_at = Carbon::createFromFormat('H:i', $end);
+
             return $break_start_at->diffInMinutes($break_end_at);
-        }
-        catch (\Exception) {
+        } catch (\Exception) {
             return 0;
         }
     }

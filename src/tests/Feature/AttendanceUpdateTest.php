@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class AttendanceUpdateTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     #[Test]
     public function it_shows_error_when_clock_in_time_is_after_clock_out_time(): void
@@ -91,13 +91,13 @@ class AttendanceUpdateTest extends TestCase
 
         // 5. 不正データ（休憩開始19:00）を送信
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
             'note' => 'テスト',
             'breaks' => [
                 'new' => [
                     'break_start_at' => '19:00', // ← 退勤後の不正データ
-                    'break_end_at'   => '19:30',
+                    'break_end_at' => '19:30',
                 ],
             ],
         ];
@@ -146,13 +146,13 @@ class AttendanceUpdateTest extends TestCase
 
         // 5. 不正データ（休憩終了19:30）を送信
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
             'note' => 'テスト',
             'breaks' => [
                 'new' => [
                     'break_start_at' => '17:30',
-                    'break_end_at'   => '19:30', // ← 退勤後の不正データ
+                    'break_end_at' => '19:30', // ← 退勤後の不正データ
                 ],
             ],
         ];
@@ -202,9 +202,9 @@ class AttendanceUpdateTest extends TestCase
 
         // 5. 備考を空欄にして更新を送信
         $formData = [
-            'clock_in_at'  => '09:00',
+            'clock_in_at' => '09:00',
             'clock_out_at' => '18:00',
-            'note'         => '', // 未入力
+            'note' => '', // 未入力
         ];
 
         // 6. 更新リクエスト送信
@@ -478,7 +478,7 @@ class AttendanceUpdateTest extends TestCase
 
         // 3. 勤怠詳細更新（修正申請を想定）
         $formData = [
-            'clock_in_at'  => '09:30',
+            'clock_in_at' => '09:30',
             'clock_out_at' => '18:30',
             'note' => '修正申請テスト',
         ];
