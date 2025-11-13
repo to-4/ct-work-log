@@ -48,11 +48,26 @@ jobs:
             sleep 5
           done
 
-      # 7. PHPUnit テスト実行
+
+      # 7. MySQL 初期化（DB・ユーザー作成）
+      - name: Initialize MySQL (create DB and user)
+        run: |
+          docker compose exec -T mysql mysql -u root -proot -e "
+            CREATE DATABASE IF NOT EXISTS laravel_testing;
+            CREATE USER IF NOT EXISTS 'larabel_user'@'%' IDENTIFIED BY 'larabel_pass';
+            GRANT ALL PRIVILEGES ON laravel_testing.* TO 'larabel_user'@'%';
+            FLUSH PRIVILEGES;
+          "
+
+      # 8. migrate:fresh を実行
+      - name: Run migrations for testing
+        run: docker compose exec -T php php artisan migrate:fresh --env=testing
+
+      # 9. PHPUnit テスト実行
       - name: Run PHPUnit tests
         run: docker compose exec php vendor/bin/phpunit
 
-      # 8. 後片付け（停止・削除）
+      # 10. 後片付け（停止・削除）
       - name: Tear down containers
         if: always()
         run: docker compose down -v
