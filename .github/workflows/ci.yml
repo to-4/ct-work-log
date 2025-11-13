@@ -54,8 +54,8 @@ jobs:
         run: |
           docker compose exec -T mysql mysql -u root -proot -e "
             CREATE DATABASE IF NOT EXISTS laravel_testing;
-            CREATE USER IF NOT EXISTS 'larabel_user'@'%' IDENTIFIED BY 'larabel_pass';
-            GRANT ALL PRIVILEGES ON laravel_testing.* TO 'larabel_user'@'%';
+            CREATE USER IF NOT EXISTS 'laravel_user'@'%' IDENTIFIED BY 'laravel_pass';
+            GRANT ALL PRIVILEGES ON laravel_testing.* TO 'laravel_user'@'%';
             FLUSH PRIVILEGES;
           "
 

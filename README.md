@@ -114,7 +114,7 @@ mysql -u root -p
 CREATE DATABASE laravel_testing;
 
 # ユーザーを作成（.env.testing で使用)
-CREATE USER 'larabel_user'@'%' IDENTIFIED BY 'larabel_pass';
+CREATE USER 'laravel_user'@'%' IDENTIFIED BY 'laravel_pass';
 
 # 権限を付与
 GRANT ALL PRIVILEGES ON `laravel_testing`.* TO 'laravel_user'@'%';
