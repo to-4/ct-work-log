@@ -4,8 +4,8 @@
 
 ### Docker ビルド
 
-1. git clone git@github.com:to-4/ct-flea-market.git
-2. cd ct-flea-market
+1. git clone git@github.com:to-4/ct-work-log.git
+2. cd ct-work-log
 3. Windows(wsl) の場合は、下記を実行
    ```
    printf "UID=%s\n" "$(id -u)" > .env
@@ -114,7 +114,7 @@ mysql -u root -p
 CREATE DATABASE laravel_testing;
 
 # ユーザーを作成（.env.testing で使用)
-CREATE USER 'laravel_user'@'%' IDENTIFIED BY 'laravel_pass';
+CREATE USER IF NOT EXISTS 'laravel_user'@'%' IDENTIFIED BY 'laravel_pass'
 
 # 権限を付与
 GRANT ALL PRIVILEGES ON `laravel_testing`.* TO 'laravel_user'@'%';

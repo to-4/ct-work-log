@@ -253,12 +253,12 @@ class AttendanceBreakTest extends TestCase
         $this->actingAs($user);
 
         // 5. 休憩開始処理（POST /attendance/break/start）
-        $breakStart = Carbon::now();
+        $breakStart = Carbon::today()->setTime(12, 0, 0);
         Carbon::setTestNow($breakStart); // 時刻固定
         $this->post(route('attendance.break.start'));
 
         // 6. 休憩終了処理（POST /attendance/break/end）
-        $breakEnd = Carbon::now()->addMinutes(30); // 0:30
+        $breakEnd = Carbon::today()->setTime(12, 30, 0);
         Carbon::setTestNow($breakEnd); // 時刻固定
         $this->post(route('attendance.break.end'));
 
