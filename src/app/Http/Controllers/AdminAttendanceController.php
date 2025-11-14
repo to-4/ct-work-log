@@ -137,7 +137,9 @@ class AdminAttendanceController extends Controller
                 ->withInput();
         }
 
-        return redirect()->route('request.list');
+        return back()
+            ->with('success', '勤怠更新が正常に完了しました')
+            ->withInput();
     }
 
     /**

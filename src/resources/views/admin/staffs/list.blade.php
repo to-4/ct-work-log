@@ -16,7 +16,7 @@
                 <tr>
                     <th>名前</th>
                     <th>メールアドレス</th>
-                    <th>詳細</th>
+                    <th>月次勤怠</th>
                 </tr>
             </thead>
             <tbody>

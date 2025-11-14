@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +38,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        // 419 Page Expired 対策
+        if ($exception instanceof TokenMismatchException) {
+            // セッションが切れている場合はログイン画面へ
+            return redirect()->route('login')->with('error', 'セッションが切れました。もう一度ログインしてください。');
+        }
+
+        return parent::render($request, $exception);
     }
 }

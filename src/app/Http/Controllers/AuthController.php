@@ -53,9 +53,9 @@ class AuthController extends Controller
 
         // メール送信（MailHogで確認可）
         Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
-            $message->from('no-reply@example.com', 'Flea Market 運営');
+            $message->from('no-reply@example.com', 'Work Log 運営');
             $message->to($user->email)
-                ->subject('【Flea Market】メール認証コード');
+                ->subject('【Work Log】メール認証コード');
         });
 
         // メール認証誘導画面
@@ -101,9 +101,9 @@ class AuthController extends Controller
 
                 // メール送信（MailHogで確認可）
                 Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
-                    $message->from('no-reply@example.com', 'Flea Market 運営');
+                    $message->from('no-reply@example.com', 'Work Log 運営');
                     $message->to($user->email)
-                        ->subject('【Flea Market】メール認証コード');
+                        ->subject('【Work Log】メール認証コード');
                 });
 
                 // 一旦ログインは成立させつつ、認証誘導ページへリダイレクト

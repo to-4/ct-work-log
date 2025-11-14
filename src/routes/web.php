@@ -201,8 +201,9 @@ Route::post('/email/verification-code/resend', function () {
 
     // メール送信（MailHog で確認可能）
     Mail::raw("新しい認証コード: {$code}\n\n有効期限: 10分", function ($message) use ($user) {
+        $message->from('no-reply@example.com', 'Work Log 運営');
         $message->to($user->email)
-            ->subject('【Flea Market】メール認証コード再送');
+            ->subject('【Work Log】メール認証コード再送');
     });
 
     return back()->with('success', '新しい認証コードを送信しました。');

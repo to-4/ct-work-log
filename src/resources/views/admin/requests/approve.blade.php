@@ -103,8 +103,8 @@
         <div class="attendance-detail__actions">
 
             @if (empty($correctionRequest->approved_at))
-            {{-- 修正ボタン --}}
-            <button type="submit" class="btn btn-primary">修正</button>
+            {{-- 承認ボタン --}}
+            <button type="submit" class="btn btn-primary">承認</button>
             @else
             {{-- 承認済みボタン（非クリック・装飾済み） --}}
             <p class="btn-approved">承認済み</p>
