@@ -264,7 +264,8 @@ class AdminAttendanceController extends Controller
             // Excel用にUTF-8 BOMを付加（文字化け対策）
             fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
             // ヘッダー行
-            fputcsv($handle, [$user->name.'さんの勤怠']);
+            $userName = str_replace([' ', '　'], '', $user->name);
+            fputcsv($handle, [$userName.'さんの勤怠']);
             fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
             /** @var Attendance $a */
